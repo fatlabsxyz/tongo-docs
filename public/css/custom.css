@@ -1,0 +1,50 @@
+/* Fat Solutions Color Scheme */
+:root {
+  --color-neutral: #1E1E1E;       /* Background */
+  --color-primary: #EA4125;       /* Accent / Links */
+  --color-secondary: #71717A;     /* Muted text */
+  --color-muted: #E7E7D8;         /* Body text */
+}
+
+/* Set the entire site background */
+body,
+.book-page,
+.book-header,
+.book-menu,
+.book-menu-content,
+.book-menu a,
+.book-menu ul,
+.book-menu nav {
+  background-color: var(--color-neutral) !important;
+  color: var(--color-muted) !important;
+}
+
+/* Fix sidebar link styles */
+.book-menu a {
+  color: var(--color-muted) !important;
+}
+
+.book-menu a.active,
+.book-menu a:hover {
+  color: var(--color-primary) !important;
+  font-weight: bold;
+}
+
+/* Remove default box shadows or separators if needed */
+.book-menu {
+  box-shadow: none !important;
+  border-right: none !important;
+}
+
+/* Adjust menu width (optional) */
+.book-menu {
+  width: 220px;
+}
+
+.book-page {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}

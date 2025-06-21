@@ -1,0 +1,23 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "Tongo Protocol"
+theme = "hugo-book"
+disablePathToLower = true
+enableGitInfo = false
+disableKinds = ['taxonomy', 'taxonomyTerm']
+
+[params]
+  BookTheme = "dark"
+  BookToC = true
+  BookSearch = true
+  BookRepo = "https://github.com/fatlabsxyz/tongo-docs"
+  BookCommitPath = "commit"
+  BookEditPath = "edit/master/packages/tongo-docs"
+  BookPortableLinks = true
+  BookServiceWorker = false
+  BookSection = "docs"
+  BookStylesheets = ["_custom.scss"] # <- load your styles
+#BookLogo = "logo.png"
+
+[markup.goldmark.renderer]
+  unsafe = true

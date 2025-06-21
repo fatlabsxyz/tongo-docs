@@ -1,0 +1,39 @@
+:root {
+  --color-neutral: #1E1E1E;       /* Background */
+  --color-primary: #EA4125;       /* Accents / links */
+  --color-secondary: #71717A;     /* Muted text */
+  --color-muted: #E7E7D8;         /* Light backgrounds / secondary cards */
+}
+
+.book-page {
+  background-color: var(--color-neutral);
+  color: var(--color-muted);
+}
+
+.book-menu {
+  background-color: #111111;
+  width: 200px; /* smaller sidebar */
+}
+
+.book-menu a {
+  color: var(--color-muted);
+}
+
+.book-menu a.active {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.book-header, .book-brand {
+  background-color: var(--color-neutral);
+  color: var(--color-muted);
+}
+
+a {
+  color: var(--color-primary);
+}
+
+pre, code {
+  background-color: #2A2A2A;
+  color: var(--color-muted);
+}

@@ -1,0 +1,12 @@
+[submodule "themes/book"]
+	path = themes/book
+	url = https://github.com/alex-shpak/hugo-book
+[submodule "themes/kraiklyn"]
+	path = themes/kraiklyn
+	url = https://github.com/jsnjack/kraiklyn
+[submodule "themes/introduction"]
+	path = themes/introduction
+	url = https://github.com/victoriadrake/hugo-theme-introduction
+[submodule "themes/hugo-book"]
+	path = themes/hugo-book
+	url = https://github.com/alex-shpak/hugo-book

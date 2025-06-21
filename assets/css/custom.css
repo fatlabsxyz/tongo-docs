@@ -1,0 +1,40 @@
+/* Sidebar width and layout adjustments */
+.main {
+  max-width: 900px;
+  margin: auto;
+  padding-left: 220px; /* Shift content right to accommodate menu */
+}
+
+.top-nav {
+  width: 200px;
+}
+
+/* Color overrides for theme elements */
+body {
+  background-color: #1E1E1E;
+  color: #E7E7D8;
+}
+
+a {
+  color: #EA4125;
+}
+a:hover {
+  color: #E7E7D8;
+}
+
+pre, code {
+  background-color: #2A2A2A;
+  color: #E7E7D8;
+}
+
+.muted {
+  color: #71717A;
+}
+
+/* Adjust menu items */
+.menu-item a {
+  color: #E7E7D8;
+}
+.menu-item.is-active a {
+  color: #EA4125;
+}

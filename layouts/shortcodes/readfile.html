@@ -1,0 +1,14 @@
+{{ $file := .Params.file }}
+{{ $markdown := .Params.markdown | default "false" }}
+{{ $path := printf "content/%s" $file }}
+
+{{ with readFile $path }}
+  {{ $content := . | replaceRE "(?s)^---.*?---" "" }}
+  {{ if eq $markdown "true" }}
+    {{ $content | markdownify }}
+  {{ else }}
+    {{ $content }}
+  {{ end }}
+{{ else }}
+  {{ errorf "File not found: %s" $path }}
+{{ end }}

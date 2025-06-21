@@ -1,0 +1,20 @@
+# Hugo build output
+/public/
+/resources/
+
+# Hugo caches
+hugo_stats.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+*.log
+
+# VSCode
+.vscode/
+
+# Git submodules (if used for themes)
+themes/*/exampleSite/
