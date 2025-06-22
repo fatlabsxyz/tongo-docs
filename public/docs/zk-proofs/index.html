@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
   Tongo ZK Proofs
   #
 
@@ -17,7 +12,7 @@ Private: x
 Pick k ← 𝔽_p
 Compute A = g^k
 Verifier sends challenge c
-Prover computes s = k &#43; c⋅x
+Prover computes s = k + c⋅x
 Verifier checks: g^s = A ⋅ y^c
 
   PED: Pedersen Commitments
@@ -26,315 +21,23 @@ Verifier checks: g^s = A ⋅ y^c
 Prove that V = g^b ⋅ h^r
 Public: g, h, V
 Private: b, r
-Pick k_b, k_r ← 𝔽_p">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="//localhost:1313/docs/zk-proofs/">
-  <meta property="og:site_name" content="Tongo Protocol">
-  <meta property="og:title" content="ZK Proofs">
-  <meta property="og:description" content="Tongo ZK Proofs # POE: Proof of Exponent # Prove knowledge of x such that y = g^x.
+Pick k_b, k_r ← 𝔽_p"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://casiojapi.github.io/tongo-docs-ui/docs/zk-proofs/"><meta property="og:site_name" content="Tongo Protocol"><meta property="og:title" content="ZK Proofs"><meta property="og:description" content="Tongo ZK Proofs # POE: Proof of Exponent # Prove knowledge of x such that y = g^x.
 Public: g, y
 Private: x
 Pick k ← 𝔽_p
 Compute A = g^k
 Verifier sends challenge c
-Prover computes s = k &#43; c⋅x
+Prover computes s = k + c⋅x
 Verifier checks: g^s = A ⋅ y^c
 PED: Pedersen Commitments # Prove that V = g^b ⋅ h^r
 Public: g, h, V
 Private: b, r
-Pick k_b, k_r ← 𝔽_p">
-  <meta property="og:locale" content="en_us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="docs">
-<title>ZK Proofs | Tongo Protocol</title>
-<link rel="icon" href="/favicon.png" >
-<link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="//localhost:1313/docs/zk-proofs/">
-<link rel="stylesheet" href="/book.min.d9fc88ff937439782ae16e0553fa704289d79e4aa3e1452f19754bd4cefdd51c.css" integrity="sha256-2fyI/5N0OXgq4W4FU/pwQonXnkqj4UUvGXVL1M791Rw=" crossorigin="anonymous">
-  <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.93b49ffaf466d613d70e1067dc7cf85745723535859f5506d9a88fbdc537d546.js" integrity="sha256-k7Sf&#43;vRm1hPXDhBn3Hz4V0VyNTWFn1UG2aiPvcU31UY=" crossorigin="anonymous"></script>
-<!--
-Made with Book Theme
-https://github.com/alex-shpak/hugo-book
--->
-  
-</head>
-<body dir="ltr">
-  <input type="checkbox" class="hidden toggle" id="menu-control" />
-  <input type="checkbox" class="hidden toggle" id="toc-control" />
-  <main class="container flex">
-    <aside class="book-menu">
-      <div class="book-menu-content">
-        
-  <nav>
-<h2 class="book-brand">
-  <a class="flex align-center" href="/"><span>Tongo Protocol</span>
-  </a>
-</h2>
-
-
-<div class="book-search hidden">
-  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
-  <div class="book-search-spinner hidden"></div>
-  <ul id="book-search-results"></ul>
-</div>
-<script>document.querySelector(".book-search").classList.remove("hidden")</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/encryption/" class="">Encryption</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/transfer/" class="">Transfer</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/auditor/" class="">Viewing Key / Auditor</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/zk-proofs/" class="active">ZK Proofs</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</nav>
-
-
-
-
-  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
-
-
- 
-      </div>
-    </aside>
-
-    <div class="book-page">
-      <header class="book-header">
-        
-  <div class="flex align-center justify-between">
-  <label for="menu-control">
-    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
-  </label>
-
-  <h3>ZK Proofs</h3>
-
-  <label for="toc-control">
-    
-    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
-    
-  </label>
-</div>
-
-
-  
-  <aside class="hidden clearfix">
-    
-  
-<nav id="TableOfContents">
-  <ul>
-    <li><a href="#poe-proof-of-exponent">POE: Proof of Exponent</a></li>
-    <li><a href="#ped-pedersen-commitments">PED: Pedersen Commitments</a></li>
-    <li><a href="#proof-of-range">Proof of Range</a></li>
-  </ul>
-</nav>
-
-
-
-  </aside>
-  
- 
-      </header>
-
-      
-      
-  <article class="markdown book-article"><h1 id="tongo-zk-proofs">
-  Tongo ZK Proofs
-  <a class="anchor" href="#tongo-zk-proofs">#</a>
-</h1>
-<h2 id="poe-proof-of-exponent">
-  POE: Proof of Exponent
-  <a class="anchor" href="#poe-proof-of-exponent">#</a>
-</h2>
-<p>Prove knowledge of <code>x</code> such that <code>y = g^x</code>.</p>
-<p>Public: <code>g, y</code><br>
-Private: <code>x</code></p>
-<p>Pick k ← 𝔽_p</p>
-<p>Compute A = g^k</p>
-<p>Verifier sends challenge c</p>
-<p>Prover computes s = k + c⋅x</p>
-<p>Verifier checks: g^s = A ⋅ y^c</p>
-<h2 id="ped-pedersen-commitments">
-  PED: Pedersen Commitments
-  <a class="anchor" href="#ped-pedersen-commitments">#</a>
-</h2>
-<p>Prove that <code>V = g^b ⋅ h^r</code></p>
-<p>Public: <code>g, h, V</code><br>
-Private: <code>b, r</code></p>
-<p>Pick k_b, k_r ← 𝔽_p</p>
-<p>Compute A = g^{k_b} ⋅ h^{k_r}</p>
-<p>Verifier sends challenge c</p>
-<p>Prover computes:
+Pick k_b, k_r ← 𝔽_p"><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="docs"><title>ZK Proofs | Tongo Protocol</title><link rel=icon href=/tongo-docs-ui/favicon.png><link rel=manifest href=/tongo-docs-ui/manifest.json><link rel=canonical href=https://casiojapi.github.io/tongo-docs-ui/docs/zk-proofs/><link rel=stylesheet href=/tongo-docs-ui/book.min.d9fc88ff937439782ae16e0553fa704289d79e4aa3e1452f19754bd4cefdd51c.css integrity="sha256-2fyI/5N0OXgq4W4FU/pwQonXnkqj4UUvGXVL1M791Rw=" crossorigin=anonymous><script defer src=/tongo-docs-ui/fuse.min.js></script><script defer src=/tongo-docs-ui/en.search.min.75a9c703449d48385b3af14ddf36aabfcfe0e06de5b80349db99220971e2cced.js integrity="sha256-danHA0SdSDhbOvFN3zaqv8/g4G3luANJ25kiCXHizO0=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/tongo-docs-ui/><span>Tongo Protocol</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/tongo-docs-ui/docs/encryption/>Encryption</a></li><li><a href=/tongo-docs-ui/docs/transfer/>Transfer</a></li><li><a href=/tongo-docs-ui/docs/auditor/>Viewing Key / Auditor</a></li><li><a href=/tongo-docs-ui/docs/zk-proofs/ class=active>ZK Proofs</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/tongo-docs-ui/svg/menu.svg class=book-icon alt=Menu></label><h3>ZK Proofs</h3><label for=toc-control><img src=/tongo-docs-ui/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#poe-proof-of-exponent>POE: Proof of Exponent</a></li><li><a href=#ped-pedersen-commitments>PED: Pedersen Commitments</a></li><li><a href=#proof-of-range>Proof of Range</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=tongo-zk-proofs>Tongo ZK Proofs
+<a class=anchor href=#tongo-zk-proofs>#</a></h1><h2 id=poe-proof-of-exponent>POE: Proof of Exponent
+<a class=anchor href=#poe-proof-of-exponent>#</a></h2><p>Prove knowledge of <code>x</code> such that <code>y = g^x</code>.</p><p>Public: <code>g, y</code><br>Private: <code>x</code></p><p>Pick k ← 𝔽_p</p><p>Compute A = g^k</p><p>Verifier sends challenge c</p><p>Prover computes s = k + c⋅x</p><p>Verifier checks: g^s = A ⋅ y^c</p><h2 id=ped-pedersen-commitments>PED: Pedersen Commitments
+<a class=anchor href=#ped-pedersen-commitments>#</a></h2><p>Prove that <code>V = g^b ⋅ h^r</code></p><p>Public: <code>g, h, V</code><br>Private: <code>b, r</code></p><p>Pick k_b, k_r ← 𝔽_p</p><p>Compute A = g^{k_b} ⋅ h^{k_r}</p><p>Verifier sends challenge c</p><p>Prover computes:
 s_b = k_b + c⋅b
-s_r = k_r + c⋅r</p>
-<p>Verifier checks: g^{s_b} h^{s_r} = A ⋅ V^c</p>
-<h2 id="proof-of-range">
-  Proof of Range
-  <a class="anchor" href="#proof-of-range">#</a>
-</h2>
-<p>Given <code>V = g^b ⋅ h^r</code>, show that <code>b ∈ [0, 2^32)</code></p>
-<p>Decompose <code>b</code> into bits: <code>b = ∑ b_i ⋅ 2^i</code><br>
-Commit each bit: <code>V_i = g^{b_i} ⋅ h^{r_i}</code><br>
-Reconstruct: <code>V = ∏ V_i^{2^i}</code></p>
-<p>Each <code>V_i</code> must be either:</p>
-<ul>
-<li><code>V_i = h^{r_i}</code> (if <code>b_i = 0</code>)</li>
-<li><code>V_i = g ⋅ h^{r_i}</code> (if <code>b_i = 1</code>)</li>
-</ul>
-<p>Prove each with a POE OR proof:</p>
-<p>π_bit: V = h^r OR V/g = h^r</p>
-<p>Use Fiat-Shamir to make all interactive protocols non-interactive by replacing <code>c</code> with <code>H(A)</code></p>
-</article>
- 
-      
-
-      <footer class="book-footer">
-        
-  <div class="flex flex-wrap justify-between">
-
-
-
-
-  <div>
-    <a class="flex align-center" href="https://github.com/fatlabsxyz/tongo-docs/edit/master/packages/tongo-docs/content/docs/zk-proofs.md" target="_blank" rel="noopener">
-      <img src="/svg/edit.svg" class="book-icon" alt="" />
-      <span>Edit this page</span>
-    </a>
-  </div>
-
-
-</div>
-
-
-
-  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
-
-
- 
-        
-      </footer>
-
-      
-  
-  <div class="book-comments">
-
-</div>
-  
- 
-
-      <label for="menu-control" class="hidden book-menu-overlay"></label>
-    </div>
-
-    
-    <aside class="book-toc">
-      <div class="book-toc-content">
-        
-  
-<nav id="TableOfContents">
-  <ul>
-    <li><a href="#poe-proof-of-exponent">POE: Proof of Exponent</a></li>
-    <li><a href="#ped-pedersen-commitments">PED: Pedersen Commitments</a></li>
-    <li><a href="#proof-of-range">Proof of Range</a></li>
-  </ul>
-</nav>
-
-
- 
-      </div>
-    </aside>
-    
-  </main>
-
-  
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
+s_r = k_r + c⋅r</p><p>Verifier checks: g^{s_b} h^{s_r} = A ⋅ V^c</p><h2 id=proof-of-range>Proof of Range
+<a class=anchor href=#proof-of-range>#</a></h2><p>Given <code>V = g^b ⋅ h^r</code>, show that <code>b ∈ [0, 2^32)</code></p><p>Decompose <code>b</code> into bits: <code>b = ∑ b_i ⋅ 2^i</code><br>Commit each bit: <code>V_i = g^{b_i} ⋅ h^{r_i}</code><br>Reconstruct: <code>V = ∏ V_i^{2^i}</code></p><p>Each <code>V_i</code> must be either:</p><ul><li><code>V_i = h^{r_i}</code> (if <code>b_i = 0</code>)</li><li><code>V_i = g ⋅ h^{r_i}</code> (if <code>b_i = 1</code>)</li></ul><p>Prove each with a POE OR proof:</p><p>π_bit: V = h^r OR V/g = h^r</p><p>Use Fiat-Shamir to make all interactive protocols non-interactive by replacing <code>c</code> with <code>H(A)</code></p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/fatlabsxyz/tongo-docs/edit/master/packages/tongo-docs/content/docs/zk-proofs.md target=_blank rel=noopener><img src=/tongo-docs-ui/svg/edit.svg class=book-icon alt>
+<span>Edit this page</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#poe-proof-of-exponent>POE: Proof of Exponent</a></li><li><a href=#ped-pedersen-commitments>PED: Pedersen Commitments</a></li><li><a href=#proof-of-range>Proof of Range</a></li></ul></nav></div></aside></main></body></html>

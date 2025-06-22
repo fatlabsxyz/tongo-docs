@@ -1,39 +1,56 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Docs on Tongo Protocol</title>
-    <link>//localhost:1313/docs/</link>
-    <description>Recent content in Docs on Tongo Protocol</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <atom:link href="//localhost:1313/docs/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Encryption</title>
-      <link>//localhost:1313/docs/encryption/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/docs/encryption/</guid>
-      <description>&lt;h1 id=&#34;encryption&#34;&gt;&#xA;  Encryption&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#encryption&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;Each account balance is encrypted using ElGamal encryption over elliptic curves, which supports additive homomorphism. A user&amp;rsquo;s encrypted balance is represented as:&lt;/p&gt;&#xA;&lt;p&gt;Enc[y](b, r) = (g^b y^r, g^r)&lt;/p&gt;&#xA;&lt;p&gt;This is the key property Tongo leverages on-chain to efficiently update balances while keeping them private.&lt;/p&gt;&#xA;&lt;p&gt;To decipher their balance a user can recover &lt;code&gt;g^b&lt;/code&gt; with their private key by computing &lt;code&gt;L / R^x&lt;/code&gt;. This is only possible with the knowledge of the private key &lt;code&gt;x&lt;/code&gt;. Then &lt;code&gt;g^b&lt;/code&gt; has to be brute-forced to obtain &lt;code&gt;b&lt;/code&gt;. If &lt;code&gt;b&lt;/code&gt; lies in a small range, such as &lt;code&gt;[0, 2^32)&lt;/code&gt;, the brute force can be done without a problem.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Transfer</title>
-      <link>//localhost:1313/docs/transfer/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/docs/transfer/</guid>
-      <description>&lt;h1 id=&#34;transfer&#34;&gt;&#xA;  Transfer&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#transfer&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;When a user &lt;code&gt;y&lt;/code&gt; who has a balance &lt;code&gt;b_0&lt;/code&gt;, wants to transfer an amount &lt;code&gt;b &amp;lt; b_0&lt;/code&gt; to another user &lt;code&gt;ȳ&lt;/code&gt;, they must create two encryptions:&lt;/p&gt;&#xA;&lt;p&gt;(L, R) = Enc[y](b, r)&#xA;(ȴ, ṙ) = Enc[ȳ](b, r)&lt;/p&gt;&#xA;&lt;p&gt;The transaction is done by subtracting the encryption &lt;code&gt;(L, R)&lt;/code&gt; from the &lt;code&gt;y&lt;/code&gt; balance and adding the encryption &lt;code&gt;(ȴ, ṙ)&lt;/code&gt; to the &lt;code&gt;ȳ&lt;/code&gt; balance.&lt;/p&gt;&#xA;&lt;p&gt;The sender has to prove that:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;Knowledge of &lt;code&gt;x&lt;/code&gt; such that &lt;code&gt;y = g^x&lt;/code&gt; (POE)&lt;/li&gt;&#xA;&lt;li&gt;Knowledge of &lt;code&gt;r&lt;/code&gt; such that &lt;code&gt;R = g^r&lt;/code&gt; (POE)&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;L = g^b y^r&lt;/code&gt; (PED)&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;ȴ = g^b ȳ^r&lt;/code&gt; (PED)&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;b ∈ [0, b_max)&lt;/code&gt; (RAN)&lt;/li&gt;&#xA;&lt;li&gt;The balance after deduction &lt;code&gt;b&#39; = b_0 - b&lt;/code&gt; is positive (RAN)&lt;/li&gt;&#xA;&lt;/ol&gt;</description>
-    </item>
-    <item>
-      <title>Viewing Key / Auditor</title>
-      <link>//localhost:1313/docs/auditor/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/docs/auditor/</guid>
-      <description>&lt;h1 id=&#34;auditability&#34;&gt;&#xA;  Auditability&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#auditability&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 id=&#34;global-auditor&#34;&gt;&#xA;  Global Auditor&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#global-auditor&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;At the time of deploying the Tongo contract, the deploying entity must choose a public key that will serve as the global auditor key. For each user, the contract stores the account balance encrypted under the auditor’s public key. The auditor can decipher the amount stored for each account at any time.&lt;/p&gt;&#xA;&lt;p&gt;For a transaction to be valid, the user must include (along with the new ciphered balance for their own key and the recipient’s key) a ciphered balance for the global auditor’s public key, along with a ZK proof showing that this ciphered balance encodes the same amount sent in the transaction.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>ZK Proofs</title>
-      <link>//localhost:1313/docs/zk-proofs/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/docs/zk-proofs/</guid>
-      <description>&lt;h1 id=&#34;tongo-zk-proofs&#34;&gt;&#xA;  Tongo ZK Proofs&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#tongo-zk-proofs&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;h2 id=&#34;poe-proof-of-exponent&#34;&gt;&#xA;  POE: Proof of Exponent&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#poe-proof-of-exponent&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Prove knowledge of &lt;code&gt;x&lt;/code&gt; such that &lt;code&gt;y = g^x&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Public: &lt;code&gt;g, y&lt;/code&gt;&lt;br&gt;&#xA;Private: &lt;code&gt;x&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Pick k ← 𝔽_p&lt;/p&gt;&#xA;&lt;p&gt;Compute A = g^k&lt;/p&gt;&#xA;&lt;p&gt;Verifier sends challenge c&lt;/p&gt;&#xA;&lt;p&gt;Prover computes s = k + c⋅x&lt;/p&gt;&#xA;&lt;p&gt;Verifier checks: g^s = A ⋅ y^c&lt;/p&gt;&#xA;&lt;h2 id=&#34;ped-pedersen-commitments&#34;&gt;&#xA;  PED: Pedersen Commitments&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#ped-pedersen-commitments&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Prove that &lt;code&gt;V = g^b ⋅ h^r&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Public: &lt;code&gt;g, h, V&lt;/code&gt;&lt;br&gt;&#xA;Private: &lt;code&gt;b, r&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Pick k_b, k_r ← 𝔽_p&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docs on Tongo Protocol</title><link>https://casiojapi.github.io/tongo-docs-ui/docs/</link><description>Recent content in Docs on Tongo Protocol</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://casiojapi.github.io/tongo-docs-ui/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Encryption</title><link>https://casiojapi.github.io/tongo-docs-ui/docs/encryption/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://casiojapi.github.io/tongo-docs-ui/docs/encryption/</guid><description>&lt;h1 id="encryption">
+ Encryption
+ &lt;a class="anchor" href="#encryption">#&lt;/a>
+&lt;/h1>
+&lt;p>Each account balance is encrypted using ElGamal encryption over elliptic curves, which supports additive homomorphism. A user&amp;rsquo;s encrypted balance is represented as:&lt;/p>
+&lt;p>Enc[y](b, r) = (g^b y^r, g^r)&lt;/p>
+&lt;p>This is the key property Tongo leverages on-chain to efficiently update balances while keeping them private.&lt;/p>
+&lt;p>To decipher their balance a user can recover &lt;code>g^b&lt;/code> with their private key by computing &lt;code>L / R^x&lt;/code>. This is only possible with the knowledge of the private key &lt;code>x&lt;/code>. Then &lt;code>g^b&lt;/code> has to be brute-forced to obtain &lt;code>b&lt;/code>. If &lt;code>b&lt;/code> lies in a small range, such as &lt;code>[0, 2^32)&lt;/code>, the brute force can be done without a problem.&lt;/p></description></item><item><title>Transfer</title><link>https://casiojapi.github.io/tongo-docs-ui/docs/transfer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://casiojapi.github.io/tongo-docs-ui/docs/transfer/</guid><description>&lt;h1 id="transfer">
+ Transfer
+ &lt;a class="anchor" href="#transfer">#&lt;/a>
+&lt;/h1>
+&lt;p>When a user &lt;code>y&lt;/code> who has a balance &lt;code>b_0&lt;/code>, wants to transfer an amount &lt;code>b &amp;lt; b_0&lt;/code> to another user &lt;code>ȳ&lt;/code>, they must create two encryptions:&lt;/p>
+&lt;p>(L, R) = Enc[y](b, r)
+(ȴ, ṙ) = Enc[ȳ](b, r)&lt;/p>
+&lt;p>The transaction is done by subtracting the encryption &lt;code>(L, R)&lt;/code> from the &lt;code>y&lt;/code> balance and adding the encryption &lt;code>(ȴ, ṙ)&lt;/code> to the &lt;code>ȳ&lt;/code> balance.&lt;/p>
+&lt;p>The sender has to prove that:&lt;/p>
+&lt;ol>
+&lt;li>Knowledge of &lt;code>x&lt;/code> such that &lt;code>y = g^x&lt;/code> (POE)&lt;/li>
+&lt;li>Knowledge of &lt;code>r&lt;/code> such that &lt;code>R = g^r&lt;/code> (POE)&lt;/li>
+&lt;li>&lt;code>L = g^b y^r&lt;/code> (PED)&lt;/li>
+&lt;li>&lt;code>ȴ = g^b ȳ^r&lt;/code> (PED)&lt;/li>
+&lt;li>&lt;code>b ∈ [0, b_max)&lt;/code> (RAN)&lt;/li>
+&lt;li>The balance after deduction &lt;code>b' = b_0 - b&lt;/code> is positive (RAN)&lt;/li>
+&lt;/ol></description></item><item><title>Viewing Key / Auditor</title><link>https://casiojapi.github.io/tongo-docs-ui/docs/auditor/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://casiojapi.github.io/tongo-docs-ui/docs/auditor/</guid><description>&lt;h1 id="auditability">
+ Auditability
+ &lt;a class="anchor" href="#auditability">#&lt;/a>
+&lt;/h1>
+&lt;h2 id="global-auditor">
+ Global Auditor
+ &lt;a class="anchor" href="#global-auditor">#&lt;/a>
+&lt;/h2>
+&lt;p>At the time of deploying the Tongo contract, the deploying entity must choose a public key that will serve as the global auditor key. For each user, the contract stores the account balance encrypted under the auditor’s public key. The auditor can decipher the amount stored for each account at any time.&lt;/p>
+&lt;p>For a transaction to be valid, the user must include (along with the new ciphered balance for their own key and the recipient’s key) a ciphered balance for the global auditor’s public key, along with a ZK proof showing that this ciphered balance encodes the same amount sent in the transaction.&lt;/p></description></item><item><title>ZK Proofs</title><link>https://casiojapi.github.io/tongo-docs-ui/docs/zk-proofs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://casiojapi.github.io/tongo-docs-ui/docs/zk-proofs/</guid><description>&lt;h1 id="tongo-zk-proofs">
+ Tongo ZK Proofs
+ &lt;a class="anchor" href="#tongo-zk-proofs">#&lt;/a>
+&lt;/h1>
+&lt;h2 id="poe-proof-of-exponent">
+ POE: Proof of Exponent
+ &lt;a class="anchor" href="#poe-proof-of-exponent">#&lt;/a>
+&lt;/h2>
+&lt;p>Prove knowledge of &lt;code>x&lt;/code> such that &lt;code>y = g^x&lt;/code>.&lt;/p>
+&lt;p>Public: &lt;code>g, y&lt;/code>&lt;br>
+Private: &lt;code>x&lt;/code>&lt;/p>
+&lt;p>Pick k ← 𝔽_p&lt;/p>
+&lt;p>Compute A = g^k&lt;/p>
+&lt;p>Verifier sends challenge c&lt;/p>
+&lt;p>Prover computes s = k + c⋅x&lt;/p>
+&lt;p>Verifier checks: g^s = A ⋅ y^c&lt;/p>
+&lt;h2 id="ped-pedersen-commitments">
+ PED: Pedersen Commitments
+ &lt;a class="anchor" href="#ped-pedersen-commitments">#&lt;/a>
+&lt;/h2>
+&lt;p>Prove that &lt;code>V = g^b ⋅ h^r&lt;/code>&lt;/p>
+&lt;p>Public: &lt;code>g, h, V&lt;/code>&lt;br>
+Private: &lt;code>b, r&lt;/code>&lt;/p>
+&lt;p>Pick k_b, k_r ← 𝔽_p&lt;/p></description></item></channel></rss>

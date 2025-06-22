@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://casiojapi.github.io/tongo-docs-ui/"
 languageCode = "en-us"
 title = "Tongo Protocol"
 theme = "hugo-book"

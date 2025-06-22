@@ -1,14 +1,14 @@
 {
   "name": "Tongo Protocol",
   "short_name": "Tongo Protocol",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/tongo-docs-ui/",
+  "scope": "/tongo-docs-ui/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/tongo-docs-ui/favicon.svg",
       "sizes": "512x512"
     }
   ]

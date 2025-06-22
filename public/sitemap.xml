@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>//localhost:1313/</loc>
-  </url><url>
-    <loc>//localhost:1313/docs/encryption/</loc>
-  </url><url>
-    <loc>//localhost:1313/docs/transfer/</loc>
-  </url><url>
-    <loc>//localhost:1313/docs/auditor/</loc>
-  </url><url>
-    <loc>//localhost:1313/docs/zk-proofs/</loc>
-  </url><url>
-    <loc>//localhost:1313/docs/</loc>
-  </url>
-</urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>https://casiojapi.github.io/tongo-docs-ui/</loc></url><url><loc>https://casiojapi.github.io/tongo-docs-ui/docs/encryption/</loc></url><url><loc>https://casiojapi.github.io/tongo-docs-ui/docs/transfer/</loc></url><url><loc>https://casiojapi.github.io/tongo-docs-ui/docs/auditor/</loc></url><url><loc>https://casiojapi.github.io/tongo-docs-ui/docs/zk-proofs/</loc></url><url><loc>https://casiojapi.github.io/tongo-docs-ui/docs/</loc></url></urlset>
