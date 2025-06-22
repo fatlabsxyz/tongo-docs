@@ -21,11 +21,3 @@ The global auditor must:
 - Provide the public key when the contract is deployed.
 
 **Note:** If the global auditor’s secret key is leaked, all balances and transactions could be compromised. It is the responsibility of the global auditor to store the key securely.
-
-## Audit Ex Post
-
-We have implemented a protocol that allows an entity to audit, if the user agrees, the balance or the amount sent in a transaction. The entity only has to request an audit of a specific transaction and provide a public key.
-
-The user may send a ciphered balance for the auditor’s public key along with a ZK proof showing that the ciphered balance encodes the amount sent in the transaction being audited. This is done off-chain and does not require any additional on-chain infrastructure.
-
-This could even be used in a scenario where user A is waiting for user B to transfer some amount to user C.

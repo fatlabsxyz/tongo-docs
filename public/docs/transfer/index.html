@@ -1,8 +1,13 @@
-<!doctype html><html lang=en-us dir=ltr><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
   Transfer
   #
 
-When a user y who has a balance b_0, wants to transfer an amount b < b_0 to another user ȳ, they must create two encryptions:
+When a user y who has a balance b_0, wants to transfer an amount b &lt; b_0 to another user ȳ, they must create two encryptions:
 (L, R) = Enc[y](b, r)
 (ȴ, ṙ) = Enc[ȳ](b, r)
 The transaction is done by subtracting the encryption (L, R) from the y balance and adding the encryption (ȴ, ṙ) to the ȳ balance.
@@ -13,13 +18,268 @@ Knowledge of r such that R = g^r (POE)
 L = g^b y^r (PED)
 ȴ = g^b ȳ^r (PED)
 b ∈ [0, b_max) (RAN)
-The balance after deduction b' = b_0 - b is positive (RAN)
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="//localhost:1313/docs/transfer/"><meta property="og:site_name" content="Tongo Protocol"><meta property="og:title" content="Transfer"><meta property="og:description" content="Transfer # When a user y who has a balance b_0, wants to transfer an amount b < b_0 to another user ȳ, they must create two encryptions:
+The balance after deduction b&#39; = b_0 - b is positive (RAN)
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="//localhost:1313/docs/transfer/">
+  <meta property="og:site_name" content="Tongo Protocol">
+  <meta property="og:title" content="Transfer">
+  <meta property="og:description" content="Transfer # When a user y who has a balance b_0, wants to transfer an amount b &lt; b_0 to another user ȳ, they must create two encryptions:
 (L, R) = Enc[y](b, r) (ȴ, ṙ) = Enc[ȳ](b, r)
 The transaction is done by subtracting the encryption (L, R) from the y balance and adding the encryption (ȴ, ṙ) to the ȳ balance.
 The sender has to prove that:
-Knowledge of x such that y = g^x (POE) Knowledge of r such that R = g^r (POE) L = g^b y^r (PED) ȴ = g^b ȳ^r (PED) b ∈ [0, b_max) (RAN) The balance after deduction b' = b_0 - b is positive (RAN)"><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="docs"><title>Transfer | Tongo Protocol</title><link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=//localhost:1313/docs/transfer/><link rel=stylesheet href=/book.min.d9fc88ff937439782ae16e0553fa704289d79e4aa3e1452f19754bd4cefdd51c.css integrity="sha256-2fyI/5N0OXgq4W4FU/pwQonXnkqj4UUvGXVL1M791Rw=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.93b49ffaf466d613d70e1067dc7cf85745723535859f5506d9a88fbdc537d546.js integrity="sha256-k7Sf+vRm1hPXDhBn3Hz4V0VyNTWFn1UG2aiPvcU31UY=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>Tongo Protocol</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/encryption/>Encryption</a></li><li><a href=/docs/transfer/ class=active>Transfer</a></li><li><a href=/docs/auditor/>Viewing Key / Auditor</a></li><li><a href=/docs/zk-proofs/>ZK Proofs</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3>Transfer</h3><label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents></nav></aside></header><article class="markdown book-article"><h1 id=transfer>Transfer
-<a class=anchor href=#transfer>#</a></h1><p>When a user <code>y</code> who has a balance <code>b_0</code>, wants to transfer an amount <code>b &lt; b_0</code> to another user <code>ȳ</code>, they must create two encryptions:</p><p>(L, R) = Enc[y](b, r)
-(ȴ, ṙ) = Enc[ȳ](b, r)</p><p>The transaction is done by subtracting the encryption <code>(L, R)</code> from the <code>y</code> balance and adding the encryption <code>(ȴ, ṙ)</code> to the <code>ȳ</code> balance.</p><p>The sender has to prove that:</p><ol><li>Knowledge of <code>x</code> such that <code>y = g^x</code> (POE)</li><li>Knowledge of <code>r</code> such that <code>R = g^r</code> (POE)</li><li><code>L = g^b y^r</code> (PED)</li><li><code>ȴ = g^b ȳ^r</code> (PED)</li><li><code>b ∈ [0, b_max)</code> (RAN)</li><li>The balance after deduction <code>b' = b_0 - b</code> is positive (RAN)</li></ol></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/fatlabsxyz/tongo-docs/edit/master/packages/tongo-docs/content/docs/transfer.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt>
-<span>Edit this page</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents></nav></div></aside></main></body></html>
+Knowledge of x such that y = g^x (POE) Knowledge of r such that R = g^r (POE) L = g^b y^r (PED) ȴ = g^b ȳ^r (PED) b ∈ [0, b_max) (RAN) The balance after deduction b&#39; = b_0 - b is positive (RAN)">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Transfer | Tongo Protocol</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="//localhost:1313/docs/transfer/">
+<link rel="stylesheet" href="/book.min.d9fc88ff937439782ae16e0553fa704289d79e4aa3e1452f19754bd4cefdd51c.css" integrity="sha256-2fyI/5N0OXgq4W4FU/pwQonXnkqj4UUvGXVL1M791Rw=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.93b49ffaf466d613d70e1067dc7cf85745723535859f5506d9a88fbdc537d546.js" integrity="sha256-k7Sf&#43;vRm1hPXDhBn3Hz4V0VyNTWFn1UG2aiPvcU31UY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Tongo Protocol</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/encryption/" class="">Encryption</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/transfer/" class="active">Transfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/auditor/" class="">Viewing Key / Auditor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/zk-proofs/" class="">ZK Proofs</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Transfer</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="transfer">
+  Transfer
+  <a class="anchor" href="#transfer">#</a>
+</h1>
+<p>When a user <code>y</code> who has a balance <code>b_0</code>, wants to transfer an amount <code>b &lt; b_0</code> to another user <code>ȳ</code>, they must create two encryptions:</p>
+<p>(L, R) = Enc[y](b, r)
+(ȴ, ṙ) = Enc[ȳ](b, r)</p>
+<p>The transaction is done by subtracting the encryption <code>(L, R)</code> from the <code>y</code> balance and adding the encryption <code>(ȴ, ṙ)</code> to the <code>ȳ</code> balance.</p>
+<p>The sender has to prove that:</p>
+<ol>
+<li>Knowledge of <code>x</code> such that <code>y = g^x</code> (POE)</li>
+<li>Knowledge of <code>r</code> such that <code>R = g^r</code> (POE)</li>
+<li><code>L = g^b y^r</code> (PED)</li>
+<li><code>ȴ = g^b ȳ^r</code> (PED)</li>
+<li><code>b ∈ [0, b_max)</code> (RAN)</li>
+<li>The balance after deduction <code>b' = b_0 - b</code> is positive (RAN)</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/fatlabsxyz/tongo-docs/edit/master/packages/tongo-docs/content/docs/transfer.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

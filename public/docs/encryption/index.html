@@ -1,14 +1,266 @@
-<!doctype html><html lang=en-us dir=ltr><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
   Encryption
   #
 
 Each account balance is encrypted using ElGamal encryption over elliptic curves, which supports additive homomorphism. A user&rsquo;s encrypted balance is represented as:
 Enc[y](b, r) = (g^b y^r, g^r)
 This is the key property Tongo leverages on-chain to efficiently update balances while keeping them private.
-To decipher their balance a user can recover g^b with their private key by computing L / R^x. This is only possible with the knowledge of the private key x. Then g^b has to be brute-forced to obtain b. If b lies in a small range, such as [0, 2^32), the brute force can be done without a problem."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="//localhost:1313/docs/encryption/"><meta property="og:site_name" content="Tongo Protocol"><meta property="og:title" content="Encryption"><meta property="og:description" content="Encryption # Each account balance is encrypted using ElGamal encryption over elliptic curves, which supports additive homomorphism. A user’s encrypted balance is represented as:
+To decipher their balance a user can recover g^b with their private key by computing L / R^x. This is only possible with the knowledge of the private key x. Then g^b has to be brute-forced to obtain b. If b lies in a small range, such as [0, 2^32), the brute force can be done without a problem.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="//localhost:1313/docs/encryption/">
+  <meta property="og:site_name" content="Tongo Protocol">
+  <meta property="og:title" content="Encryption">
+  <meta property="og:description" content="Encryption # Each account balance is encrypted using ElGamal encryption over elliptic curves, which supports additive homomorphism. A user’s encrypted balance is represented as:
 Enc[y](b, r) = (g^b y^r, g^r)
 This is the key property Tongo leverages on-chain to efficiently update balances while keeping them private.
-To decipher their balance a user can recover g^b with their private key by computing L / R^x. This is only possible with the knowledge of the private key x. Then g^b has to be brute-forced to obtain b. If b lies in a small range, such as [0, 2^32), the brute force can be done without a problem."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="docs"><title>Encryption | Tongo Protocol</title><link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=//localhost:1313/docs/encryption/><link rel=stylesheet href=/book.min.d9fc88ff937439782ae16e0553fa704289d79e4aa3e1452f19754bd4cefdd51c.css integrity="sha256-2fyI/5N0OXgq4W4FU/pwQonXnkqj4UUvGXVL1M791Rw=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.93b49ffaf466d613d70e1067dc7cf85745723535859f5506d9a88fbdc537d546.js integrity="sha256-k7Sf+vRm1hPXDhBn3Hz4V0VyNTWFn1UG2aiPvcU31UY=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>Tongo Protocol</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/encryption/ class=active>Encryption</a></li><li><a href=/docs/transfer/>Transfer</a></li><li><a href=/docs/auditor/>Viewing Key / Auditor</a></li><li><a href=/docs/zk-proofs/>ZK Proofs</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3>Encryption</h3><label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents></nav></aside></header><article class="markdown book-article"><h1 id=encryption>Encryption
-<a class=anchor href=#encryption>#</a></h1><p>Each account balance is encrypted using ElGamal encryption over elliptic curves, which supports additive homomorphism. A user&rsquo;s encrypted balance is represented as:</p><p>Enc[y](b, r) = (g^b y^r, g^r)</p><p>This is the key property Tongo leverages on-chain to efficiently update balances while keeping them private.</p><p>To decipher their balance a user can recover <code>g^b</code> with their private key by computing <code>L / R^x</code>. This is only possible with the knowledge of the private key <code>x</code>. Then <code>g^b</code> has to be brute-forced to obtain <code>b</code>. If <code>b</code> lies in a small range, such as <code>[0, 2^32)</code>, the brute force can be done without a problem.</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/fatlabsxyz/tongo-docs/edit/master/packages/tongo-docs/content/docs/encryption.md target=_blank rel=noopener><img src=/svg/edit.svg class=book-icon alt>
-<span>Edit this page</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents></nav></div></aside></main></body></html>
+To decipher their balance a user can recover g^b with their private key by computing L / R^x. This is only possible with the knowledge of the private key x. Then g^b has to be brute-forced to obtain b. If b lies in a small range, such as [0, 2^32), the brute force can be done without a problem.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>Encryption | Tongo Protocol</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="//localhost:1313/docs/encryption/">
+<link rel="stylesheet" href="/book.min.d9fc88ff937439782ae16e0553fa704289d79e4aa3e1452f19754bd4cefdd51c.css" integrity="sha256-2fyI/5N0OXgq4W4FU/pwQonXnkqj4UUvGXVL1M791Rw=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.93b49ffaf466d613d70e1067dc7cf85745723535859f5506d9a88fbdc537d546.js" integrity="sha256-k7Sf&#43;vRm1hPXDhBn3Hz4V0VyNTWFn1UG2aiPvcU31UY=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Tongo Protocol</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/encryption/" class="active">Encryption</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/transfer/" class="">Transfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/auditor/" class="">Viewing Key / Auditor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/zk-proofs/" class="">ZK Proofs</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Encryption</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="encryption">
+  Encryption
+  <a class="anchor" href="#encryption">#</a>
+</h1>
+<p>Each account balance is encrypted using ElGamal encryption over elliptic curves, which supports additive homomorphism. A user&rsquo;s encrypted balance is represented as:</p>
+<p>Enc[y](b, r) = (g^b y^r, g^r)</p>
+<p>This is the key property Tongo leverages on-chain to efficiently update balances while keeping them private.</p>
+<p>To decipher their balance a user can recover <code>g^b</code> with their private key by computing <code>L / R^x</code>. This is only possible with the knowledge of the private key <code>x</code>. Then <code>g^b</code> has to be brute-forced to obtain <code>b</code>. If <code>b</code> lies in a small range, such as <code>[0, 2^32)</code>, the brute force can be done without a problem.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/fatlabsxyz/tongo-docs/edit/master/packages/tongo-docs/content/docs/encryption.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
