@@ -101,7 +101,7 @@ const result = decipher_balance(sum, secretKey); // 150n
 
 ### Proof of Exponent (POE)
 
-Proves knowledge of discrete logarithm $x$ such that $y = g^x$:
+Proves knowledge of discrete logarithm \\(x\\) such that \\(y = g^x\\):
 
 ```typescript
 import { prove_fund, verify_fund } from 'she-js';

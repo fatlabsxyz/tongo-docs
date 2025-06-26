@@ -25,7 +25,7 @@ The protocol supports multiple compliance models:
 ## How It Works
 
 ### 1. Key Generation
-Each user generates a keypair $(x, y = g^x)$ where $g$ is the Stark curve generator. The public key $y$ serves as their account identifier.
+Each user generates a keypair {{< katex >}}(x, y = g^x){{< /katex >}} where {{< katex >}}g{{< /katex >}} is the Stark curve generator. The public key {{< katex >}}y{{< /katex >}} serves as their account identifier.
 
 ### 2. Encrypted Balances
 Balances are stored as ElGamal ciphertexts:
@@ -53,8 +53,8 @@ All operations require proofs built from three primitives:
 ### Funding
 Convert standard ERC20 tokens to encrypted balances:
 ```typescript
-const fundOp = account.fund(1000n);
-await signer.execute(fundOp.toCallData());
+const fundOp = await account.fund({ amount: 1000n });
+await signer.execute([fundOp.approve!, fundOp.toCallData()]);
 ```
 
 ### Transfers
@@ -89,7 +89,7 @@ const withdrawOp = account.withdraw({
 - **Authenticity**: Only key owners can spend their balances
 
 ### Assumptions
-- **Discrete Log**: Hard to find $x$ given $g^x$ on Stark curve
+- **Discrete Log**: Hard to find {{< katex >}}x{{< /katex >}} given {{< katex >}}g^x{{< /katex >}} on Stark curve
 - **Decisional Diffie-Hellman**: ElGamal encryptions are indistinguishable
 - **Hash Function**: Fiat-Shamir transform uses secure hash
 
@@ -124,19 +124,11 @@ const withdrawOp = account.withdraw({
 ## Limitations
 
 ### Balance Range
-- Maximum balance: $2^{32} - 1$ (~4.3 billion units)
+- Maximum balance: {{< katex >}}2^{32} - 1{{< /katex >}} (~4.3 billion units)
 - Chosen for efficient brute-force decryption
 - Sufficient for most token denominations
 
-### Decryption Cost
-- Brute force required to read balances
-- Time scales linearly with balance amount
-- Mitigated by symmetric encryption backup
 
-### Proof Size
-- ~32KB per transfer (uncompressed)
-- Larger than standard transactions
-- Compressed to ~8KB in practice
 
 ## Roadmap
 
@@ -150,10 +142,6 @@ const withdrawOp = account.withdraw({
 - **Advanced compliance**: Threshold auditing, time-locked viewing
 - **DeFi primitives**: Native AMM, lending protocols
 
-### Long Term
-- **Cross-chain support**: Bridge to other Starknet appchains
-- **Quantum resistance**: Post-quantum cryptographic upgrade path
-- **Programmable privacy**: Smart contracts over encrypted data
 
 ## Getting Started
 

@@ -14,7 +14,7 @@ The Tongo protocol is implemented as a Cairo smart contract on Starknet, leverag
 
 The main `Tongo` contract implements the `ITongo` interface and manages all confidential payment operations:
 
-```cairo
+```rust
 #[starknet::interface]
 pub trait ITongo<TContractState> {
     fn fund(ref self: TContractState, fund: Fund);
@@ -35,7 +35,7 @@ pub trait ITongo<TContractState> {
 
 ### Storage Structure
 
-```cairo
+```rust
 #[storage]
 struct Storage {
     balance: Map<PubKey, CipherBalance>,        // Main encrypted balances
@@ -51,7 +51,7 @@ struct Storage {
 
 The contract emits events for all operations to enable off-chain monitoring:
 
-```cairo
+```rust
 #[derive(Drop, starknet::Event)]
 struct TransferEvent {
     from: PubKey,
@@ -87,7 +87,7 @@ struct RolloverEvent {
 
 ### Core Types
 
-```cairo
+```rust
 // Public key as elliptic curve point
 struct PubKey {
     x: felt252,
@@ -119,7 +119,7 @@ struct State {
 
 ### Operation Structures
 
-```cairo
+```rust
 struct Fund {
     to: PubKey,
     amount: felt252,
@@ -168,7 +168,7 @@ The contract includes a sophisticated zero-knowledge proof verification system:
 - Curve parameter constants
 
 #### **structs.cairo** - Proof data structures
-```cairo
+```rust
 struct ProofOfFund {
     Ax: StarkPoint,
     sx: felt252
@@ -193,7 +193,7 @@ struct ProofOfTransfer {
 
 Converts ERC20 tokens to encrypted balances:
 
-```cairo
+```rust
 fn fund(ref self: TContractState, fund: Fund) {
     // Verify proof of ownership
     verify_fund(fund.proof, fund.to, fund.amount);
@@ -215,7 +215,7 @@ fn fund(ref self: TContractState, fund: Fund) {
 
 Performs confidential transfers between accounts:
 
-```cairo
+```rust
 fn transfer(ref self: TContractState, transfer: Transfer) {
     // Verify comprehensive transfer proof
     verify_transfer(transfer.proof, /* public inputs */);
@@ -241,7 +241,7 @@ fn transfer(ref self: TContractState, transfer: Transfer) {
 
 Merges pending transfers into main balance:
 
-```cairo
+```rust
 fn rollover(ref self: TContractState, rollover: Rollover) {
     // Verify ownership
     verify_ownership(rollover.proof, rollover.to);
@@ -281,7 +281,7 @@ fn rollover(ref self: TContractState, rollover: Rollover) {
 
 ### Configuration
 
-```cairo
+```rust
 // Contract constructor
 fn constructor(
     ref self: ContractState,

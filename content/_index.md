@@ -8,6 +8,8 @@ weight = 1
 
 **Confidential payments for ERC20 tokens on Starknet.** Tongo wraps any ERC20 token with ElGamal encryption, enabling private transfers while maintaining full auditability and compliance features.
 
+Based on the [Zether paper](https://eprint.iacr.org/2019/191) by Bünz et al., adapted for Starknet's native elliptic curve operations.
+
 {{< hint info >}}
 **No Trusted Setup** • Built entirely on elliptic curve cryptography with no zkSNARK circuits or ceremonies required.
 {{< /hint >}}
@@ -55,7 +57,7 @@ weight = 1
 
 ## How It Works
 
-Users generate keypairs $(x, y = g^x)$ and store balances as ElGamal ciphertexts:
+Users generate keypairs {{< katex >}}(x, y = g^x){{< /katex >}} and store balances as ElGamal ciphertexts:
 
 $$\text{Enc}[y](b,r) = (g^b y^r, g^r)$$
 
