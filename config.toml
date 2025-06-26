@@ -1,10 +1,10 @@
-baseURL = "https://casiojapi.github.io/tongo-docs-ui/"
+baseURL = "https://docs.tongo.cash/"
 languageCode = "en-us"
 title = "Tongo Protocol"
 theme = "hugo-book"
 disablePathToLower = true
 enableGitInfo = false
-disableKinds = ['taxonomy', 'taxonomyTerm']
+disableKinds = ["taxonomy"]
 
 [params]
   BookTheme = "dark"
@@ -16,8 +16,17 @@ disableKinds = ['taxonomy', 'taxonomyTerm']
   BookPortableLinks = true
   BookServiceWorker = false
   BookSection = "docs"
-  BookStylesheets = ["_custom.scss"] # <- load your styles
-#BookLogo = "logo.png"
+  BookStylesheets = ["_custom.scss"]
+  BookMath = true
+  math = true
 
-[markup.goldmark.renderer]
-  unsafe = true
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\\[', '\\]'], ['$$', '$$']]
+          inline = [['\\(', '\\)']]

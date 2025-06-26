@@ -4,6 +4,10 @@
   --color-primary: #EA4125;       /* Accent / Links */
   --color-secondary: #71717A;     /* Muted text */
   --color-muted: #E7E7D8;         /* Body text */
+  --color-accent: #FFA500;        /* Warning/Highlight */
+  --color-success: #22C55E;       /* Success states */
+  --color-info: #3B82F6;          /* Info states */
+  --color-warning: #F59E0B;       /* Warning states */
 }
 
 /* Set the entire site background */
@@ -22,29 +26,380 @@ body,
 /* Fix sidebar link styles */
 .book-menu a {
   color: var(--color-muted) !important;
+  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  margin: 2px 0;
 }
 
 .book-menu a.active,
 .book-menu a:hover {
   color: var(--color-primary) !important;
+  background-color: rgba(234, 65, 37, 0.1) !important;
   font-weight: bold;
 }
 
 /* Remove default box shadows or separators if needed */
 .book-menu {
   box-shadow: none !important;
-  border-right: none !important;
+  border-right: 1px solid rgba(231, 231, 216, 0.1) !important;
 }
 
 /* Adjust menu width (optional) */
 .book-menu {
-  width: 220px;
+  width: 260px;
 }
 
 .book-page {
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 3rem 2rem;
+}
+
+/* Improve content typography with better spacing */
+.book-page h1,
+.book-page h2,
+.book-page h3,
+.book-page h4,
+.book-page h5,
+.book-page h6 {
+  color: var(--color-muted) !important;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.book-page h1 {
+  font-size: 2.5rem;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.book-page h2 {
+  font-size: 2rem;
+  border-bottom: 1px solid rgba(231, 231, 216, 0.2);
+  padding-bottom: 0.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.book-page h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.book-page h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Code blocks */
+.book-page pre,
+.book-page code {
+  background-color: rgba(31, 31, 31, 0.8) !important;
+  border: 1px solid rgba(231, 231, 216, 0.1);
+  border-radius: 6px;
+}
+
+.book-page pre {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.book-page code {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.9em;
+}
+
+.book-page pre code {
+  padding: 0;
+  background: none !important;
+  border: none;
+}
+
+/* Tables */
+.book-page table {
+  background-color: rgba(31, 31, 31, 0.5) !important;
+  border: 1px solid rgba(231, 231, 216, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.book-page th {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  font-weight: bold;
+  padding: 0.75rem;
+}
+
+.book-page td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(231, 231, 216, 0.1);
+}
+
+.book-page tr:hover {
+  background-color: rgba(234, 65, 37, 0.05) !important;
+}
+
+/* Links */
+.book-page a {
+  color: var(--color-primary) !important;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.book-page a:hover {
+  border-bottom-color: var(--color-primary);
+}
+
+/* Blockquotes and hints */
+.book-page blockquote,
+.book-hint {
+  border-left: 4px solid var(--color-primary);
+  background-color: rgba(234, 65, 37, 0.1) !important;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.book-hint.info {
+  border-left-color: var(--color-info);
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.book-hint.warning {
+  border-left-color: var(--color-warning);
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+.book-hint.danger {
+  border-left-color: #EF4444;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Math equations */
+.katex {
+  color: var(--color-muted) !important;
+}
+
+.katex-display {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: rgba(31, 31, 31, 0.5);
+  border-radius: 6px;
+  border-left: 4px solid var(--color-accent);
+}
+
+/* Tabs */
+.book-tabs {
+  margin: 2rem 0;
+}
+
+.book-tabs-content {
+  background-color: rgba(31, 31, 31, 0.5) !important;
+  border: 1px solid rgba(231, 231, 216, 0.1);
+  border-radius: 0 6px 6px 6px;
+  padding: 1.5rem;
+}
+
+.book-tabs-nav {
+  display: flex;
+  margin-bottom: 0;
+}
+
+.book-tabs-nav button {
+  background-color: rgba(113, 113, 122, 0.3) !important;
+  color: var(--color-muted) !important;
+  border: 1px solid rgba(231, 231, 216, 0.1);
+  border-bottom: none;
+  padding: 0.5rem 1rem;
+  margin-right: 2px;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.2s ease;
+}
+
+.book-tabs-nav button.active,
+.book-tabs-nav button:hover {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
+
+/* Table of Contents */
+.book-toc {
+  background-color: rgba(31, 31, 31, 0.5);
+  border: 1px solid rgba(231, 231, 216, 0.1);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.book-toc nav > ul {
+  padding-left: 0;
+}
+
+.book-toc a {
+  color: var(--color-secondary) !important;
+  font-size: 0.9rem;
+  padding: 0.25rem 0;
+  display: block;
+}
+
+.book-toc a:hover {
+  color: var(--color-primary) !important;
+}
+
+/* Search */
+.book-search input {
+  background-color: rgba(31, 31, 31, 0.8) !important;
+  border: 1px solid rgba(231, 231, 216, 0.2);
+  color: var(--color-muted) !important;
+  border-radius: 6px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.book-search input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(234, 65, 37, 0.2);
+}
+
+/* Performance improvements and spacing */
+.book-page {
+  line-height: 1.8;
+  font-size: 18px;
+}
+
+.book-page p {
+  margin: 1rem 0;
+}
+
+.book-page section,
+.book-page article {
+  margin: 2rem 0;
+}
+
+/* Add more breathing room around dividers */
+.book-page hr {
+  margin: 2.5rem 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(231, 231, 216, 0.3), transparent);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .book-menu {
+    width: 100%;
+  }
+  
+  .book-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .book-page h1 {
+    font-size: 2rem;
+  }
+  
+  .book-page h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-neutral);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Add visual feedback for interactive elements */
+button, 
+.book-menu a,
+.book-page a {
+  cursor: pointer;
+}
+
+/* Improve readability of inline code in paragraphs */
+.book-page p code {
+  color: var(--color-accent) !important;
+  font-weight: 500;
+}
+
+/* Style the video container */
+.book-page iframe {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Add some visual hierarchy to lists */
+.book-page ul,
+.book-page ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.book-page li {
+  margin-bottom: 0.5rem;
+}
+
+/* Make the main content area more readable */
+.book-page {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Columns shortcode styling */
+.book-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.book-columns .flex-even {
+  flex: 1;
+  min-width: 250px;
+}
+
+.book-columns .markdown-inner h3 {
+  margin-top: 0 !important;
+  margin-bottom: 1rem;
+  color: var(--color-primary) !important;
+}
+
+.book-columns .markdown-inner ul {
+  margin-top: 0.5rem;
+}
+
+/* Mobile responsiveness for columns */
+@media (max-width: 768px) {
+  .book-columns {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .book-columns .flex-even {
+    min-width: auto;
+  }
 }
