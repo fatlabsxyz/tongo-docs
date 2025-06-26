@@ -57,9 +57,9 @@ Based on the [Zether paper](https://eprint.iacr.org/2019/191) by Bünz et al., a
 
 ## How It Works
 
-Users generate keypairs {{< katex >}}(x, y = g^x){{< /katex >}} and store balances as ElGamal ciphertexts:
+Users generate keypairs $(x, y = g^x)$ and store balances as ElGamal ciphertexts:
 
-$$\text{Enc}[y](b,r) = (g^b y^r, g^r)$$
+$$\text{Enc}[y]\left(b,r\right) = (g^b y^r, g^r)$$
 
 **Additive homomorphism** enables balance updates without decryption. All operations require zero-knowledge proofs built from:
 
@@ -125,7 +125,7 @@ Smart contract implementation and deployment
 ### [SHE Library](/docs/she)
 Low-level homomorphic encryption primitives
 
-### [TypeScript SDK](/docs/tongo-sdk)
+### [TypeScript SDK](/docs/sdk)
 High-level application interface
 
 ### [Auditing](/docs/auditor)

@@ -14,21 +14,21 @@ Each user's balance is encrypted using a public key derived from their private k
 
 $$\begin{aligned}
 \text{Enc}[y]: [0, b_{\max}) \times \mathbb{F}_p &\rightarrow G^2 \\
-\text{Enc}[y](b,r) &= (L, R) = (g^b y^r, g^r)
+\text{Enc}[y]\left(b,r\right) &= (L, R) = (g^b y^r, g^r)
 \end{aligned}$$
 
 Where:
-- {{< katex >}}y = g^x{{< /katex >}} is the user's public key (derived from private key {{< katex >}}x{{< /katex >}})
-- {{< katex >}}g{{< /katex >}} is the generator of the Stark curve
-- {{< katex >}}b{{< /katex >}} is the balance amount in the range {{< katex >}}[0, b_{\max}){{< /katex >}}
-- {{< katex >}}r{{< /katex >}} is a random blinding factor
-- {{< katex >}}p{{< /katex >}} is the curve order
+- $y = g^x$ is the user's public key (derived from private key $x$)
+- $g$ is the generator of the Stark curve
+- $b$ is the balance amount in the range $[0, b_{\max})$
+- $r$ is a random blinding factor
+- $p$ is the curve order
 
 ## Additive Homomorphism
 
 The key property that makes Tongo efficient is **additive homomorphism**. Given two encryptions under the same public key, their product is a valid encryption of the sum:
 
-$$\text{Enc}[y](b,r) \cdot \text{Enc}[y](b',r') = (g^{b+b'} y^{r+r'}, g^{r+r'}) = \text{Enc}[y](b+b', r+r')$$
+$$\text{Enc}[y]\left(b,r\right) \cdot \text{Enc}[y]\left(b',r'\right) = (g^{b+b'} y^{r+r'}, g^{r+r'}) = \text{Enc}[y]\left(b+b', r+r'\right)$$
 
 This allows the contract to:
 - Add encrypted amounts without decryption
@@ -37,14 +37,14 @@ This allows the contract to:
 
 ## Balance Decryption
 
-To read their balance, a user recovers {{< katex >}}g^b{{< /katex >}} using their private key {{< katex >}}x{{< /katex >}}:
+To read their balance, a user recovers $g^b$ using their private key $x$:
 
 $$g^b = \frac{L}{R^x} = \frac{g^b y^r}{(g^r)^x} = \frac{g^b (g^x)^r}{g^{rx}} = g^b$$
 
-Since {{< katex >}}b{{< /katex >}} is bounded by {{< katex >}}[0, 2^{32}){{< /katex >}}, the discrete logarithm {{< katex >}}b{{< /katex >}} can be computed efficiently through:
+Since $b$ is bounded by $[0, 2^{32})$, the discrete logarithm $b$ can be computed efficiently through:
 
-1. **Brute force**: Iterate {{< katex >}}g^i{{< /katex >}} for {{< katex >}}i = 0, 1, 2, ...{{< /katex >}} until matching {{< katex >}}g^b{{< /katex >}}
-2. **Baby-step Giant-step**: More efficient {{< katex >}}O(\sqrt{n}){{< /katex >}} algorithm  
+1. **Brute force**: Iterate $g^i$ for $i = 0, 1, 2, ...$ until matching $g^b$
+2. **Baby-step Giant-step**: More efficient $O(\sqrt{n})$ algorithm  
 3. **Pollard's rho**: Probabilistic algorithm with similar complexity
 
 A naïve JavaScript implementation can decrypt ~100k units per second, while optimized algorithms handle the full 32-bit range much faster.
@@ -70,11 +70,11 @@ The symmetric encryption uses a key derived from the user's private key, allowin
 ## Security Properties
 
 ### Computational Assumptions
-- **Discrete Log Problem**: Hard to find {{< katex >}}x{{< /katex >}} given {{< katex >}}g^x{{< /katex >}}
+- **Discrete Log Problem**: Hard to find $x$ given $g^x$
 - **Decisional Diffie-Hellman**: Hard to distinguish random group elements from valid encryptions
 
 ### Practical Security
-- **32-bit range**: Balances limited to {{< katex >}}[0, 2^{32}){{< /katex >}} for efficient decryption
+- **32-bit range**: Balances limited to $[0, 2^{32})$ for efficient decryption
 - **Random blinding**: Each encryption uses fresh randomness
 - **Curve security**: Relies on Stark curve (ECDSA-256 security level)
 
@@ -85,13 +85,13 @@ The symmetric encryption uses a key derived from the user's private key, allowin
 
 ## Example: Fund Operation
 
-When a user funds their account with amount {{< katex >}}b{{< /katex >}}:
+When a user funds their account with amount $b$:
 
-1. **Public inputs**: {{< katex >}}b{{< /katex >}} (revealed in ERC20 transfer), {{< katex >}}y{{< /katex >}} (user's public key)
-2. **Encryption**: {{< katex >}}\text{Enc}[y](b, 1) = (g^b y, g){{< /katex >}} 
+1. **Public inputs**: $b$ (revealed in ERC20 transfer), $y$ (user's public key)
+2. **Encryption**: $\text{Enc}[y](b, 1) = (g^b y, g)$ 
 3. **Storage**: Add to user's encrypted balance homomorphically
 
-Note that {{< katex >}}r = 1{{< /katex >}} is used for funding since the amount {{< katex >}}b{{< /katex >}} is already public in the ERC20 transaction.
+Note that $r = 1$ is used for funding since the amount $b$ is already public in the ERC20 transaction.
 
 ```rust
 // Cairo implementation (simplified)

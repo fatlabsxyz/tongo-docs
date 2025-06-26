@@ -148,7 +148,7 @@ const withdrawOp = account.withdraw({
 1. **[Install the SDK](/docs/sdk)** - TypeScript library for application integration
 2. **[Understand Encryption](/docs/encryption)** - Learn the cryptographic foundations
 3. **[Explore Transfers](/docs/transfer)** - Deep dive into the core protocol
-4. **[Study Proofs](/docs/zk-proofs)** - Understand the verification system
+4. **[Study Transfer Details](/docs/transfer)** - Understand the verification system
 5. **[Configure Auditing](/docs/auditor)** - Set up compliance features
 
 For developers ready to start building, jump directly to the [SDK documentation](/docs/sdk) and begin with the Quick Start examples.
