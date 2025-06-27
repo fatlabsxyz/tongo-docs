@@ -57,12 +57,11 @@ The sender proves each additional encryption is correctly formed using Pedersen 
 - **Compliance officers**: Institutional oversight
 - **Tax authorities**: Jurisdiction-specific reporting  
 - **Internal auditing**: Corporate governance
-- **Dispute resolution**: Escrow and arbitration
 
 ### Privacy-Preserving Architecture
 Viewing keys maintain privacy by:
 - Only revealing amounts to authorized parties
-- Not exposing transaction relationships on-chain
+- Not exposing transaction values on-chain
 - Allowing granular access control per transaction
 
 ---
@@ -70,7 +69,7 @@ Viewing keys maintain privacy by:
 ## Ex-Post Proving
 
 ### Motivation
-After a transfer is completed, participants may need to prove transaction details to third parties without revealing their private keys. Ex-post proving enables this through cryptographic proofs.
+After a transfer is completed, participants may need to prove a specific transaction detail to a third partie without revealing their private keys. Ex-post proving enables this through cryptographic proofs.
 
 ### Protocol
 Consider a completed transfer with ciphertext $(TL, TR) = (g^{b_0} y^{r_0}, g^{r_0})$. To prove the transfer amount to a third party with public key $\bar{y}$:
@@ -132,58 +131,6 @@ Tongo supports various compliance frameworks:
 - User cooperation required for private key revelation
 - Court-ordered disclosure mechanisms
 
-### Privacy-Compliance Balance
-
-#### Transparent Model
-**Configuration**: Global auditor sees all transactions
-- **Privacy**: High (amounts hidden from public)
-- **Compliance**: High (full audit trail)
-- **Use case**: Regulated institutional environments
-
-#### Selective Model
-**Configuration**: Optional viewing keys per transaction
-- **Privacy**: Very High (user-controlled disclosure)
-- **Compliance**: Medium (voluntary cooperation)
-- **Use case**: Consumer applications with optional compliance
-
-#### Hybrid Model
-**Configuration**: Global auditor + optional viewing keys
-- **Privacy**: High (amounts hidden, relationships visible to auditor)
-- **Compliance**: Very High (comprehensive monitoring)
-- **Use case**: Banking and financial services
-
-### Technical Implementation
-
-```typescript
-// Configure global auditor during deployment
-const tongoContract = await deployer.deploy("Tongo", {
-    globalAuditor: auditorPublicKey,
-    // ... other parameters
-});
-
-// Transfer with additional viewing keys
-const transfer = await sender.transfer({
-    to: receiverPubKey,
-    amount: 1000n,
-    viewKeys: [
-        complianceOfficerKey,
-        taxAuthorityKey
-    ]
-});
-
-// Ex-post proving to regulator
-const exPostProof = await sender.proveTransfer(
-    transferTxHash,
-    regulatorPubKey
-);
-```
-
-### Legal Framework Integration
-- **GDPR compliance**: User controls data sharing through viewing keys
-- **Financial regulations**: Automated reporting via auditor decryption
-- **Privacy laws**: Cryptographic guarantees prevent unauthorized access
-- **Audit requirements**: Immutable transaction logs with selective disclosure
-
 ---
 
 ## Advanced Features
@@ -193,12 +140,6 @@ Multiple auditors with threshold decryption:
 $$y_a = \sum_{i=1}^n w_i \cdot y_{a_i}$$
 
 Where $w_i$ are threshold weights and $t$ out of $n$ auditors are required for decryption.
-
-### Time-Limited Access
-Viewing keys can include temporal constraints:
-- Proof includes timestamp validation
-- Access expires after specified duration  
-- Prevents indefinite surveillance capabilities
 
 ### Zero-Knowledge Compliance
 Prove compliance properties without revealing amounts:

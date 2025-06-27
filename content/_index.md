@@ -35,20 +35,17 @@ Based on the [Zether paper](https://eprint.iacr.org/2019/191) by Bünz et al., a
 ### **Privacy**
 - **Encrypted balances** using ElGamal over Stark curve
 - **Hidden amounts** in all transfers
-- **Unlinkable transactions** with fresh randomness
 
 <--->
 
 ### **Performance**  
-- **~120K Cairo steps** per transfer verification
 - **No circuits** or trusted setup required
 - **Native Starknet** elliptic curve operations
 
 <--->
 
 ### **Compliance**
-- **Global auditor** encryption for all transfers
-- **Selective viewing keys** for specific transactions  
+- **Global auditor** for every transaction
 - **Ex-post proving** for retroactive disclosure
 
 {{% /columns %}}
@@ -63,7 +60,7 @@ $$\text{Enc}[y]\left(b,r\right) = (g^b y^r, g^r)$$
 
 **Additive homomorphism** enables balance updates without decryption. All operations require zero-knowledge proofs built from:
 
-- **POE**: Proof of discrete logarithm knowledge
+- **POE**: Proof of Exponent
 - **PED**: Pedersen commitment correctness
 - **RAN**: Range proofs via bit decomposition
 
@@ -94,7 +91,7 @@ const fundOp = await account.fund({
   erc20Address: tokenAddress
 });
 
-await signer.execute(fundOp.toCallData());
+await signer.execute([fundOp.approve!, fundOp.toCallData()]);
 ```
 {{% /tab %}}
 
@@ -123,7 +120,7 @@ Core concepts, cryptography, and security model
 Smart contract implementation and deployment
 
 ### [SHE Library](/docs/she)
-Low-level homomorphic encryption primitives
+Low-level homomorphic encryption primitives on the STARK curve
 
 ### [TypeScript SDK](/docs/sdk)
 High-level application interface
@@ -147,12 +144,6 @@ Compliance features and viewing keys
 
 ## Ecosystem
 
-{{< hint info >}}
-**Monorepo Structure**: All components developed together in `/libs` directory for consistency and rapid iteration.
-{{< /hint >}}
-
 - **Contracts**: Cairo smart contracts on Starknet
 - **SHE**: Homomorphic encryption library  
 - **SDK**: TypeScript client library
-- **UI**: React frontend interface
-- **Scripts**: Deployment automation

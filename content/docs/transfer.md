@@ -169,16 +169,3 @@ The 32-bit range proofs ensure:
 
 ### Homomorphic Security
 The ElGamal encryption scheme maintains semantic security even under homomorphic operations, ensuring transferred amounts remain confidential.
-
-## Gas Optimization
-
-Transfer verification costs approximately **120K Cairo steps**, making it efficient compared to other ZK verification schemes:
-
-| Component | Cairo Steps | Percentage |
-|-----------|-------------|------------|
-| POE proofs | ~30K | 25% |
-| PED proofs | ~40K | 33% |  
-| Range proofs | ~45K | 38% |
-| Contract logic | ~5K | 4% |
-
-Future optimizations target reducing range proof costs through Bulletproof integration and more efficient bit decomposition techniques.

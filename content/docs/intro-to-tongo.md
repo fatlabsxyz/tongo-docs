@@ -79,7 +79,7 @@ const withdrawOp = account.withdraw({
 ## Security Model
 
 ### Privacy Guarantees
-- **Balance confidentiality**: Only key holders can decrypt balances
+- **Balance confidentiality**: Only key holders (account owners and auditors) can decrypt balances
 - **Transaction privacy**: Transfer amounts are hidden from public view
 - **Unlinkability**: Transactions don't reveal sender-receiver relationships
 
@@ -87,11 +87,6 @@ const withdrawOp = account.withdraw({
 - **No double spending**: Range proofs prevent negative balances
 - **Conservation**: Total supply is preserved (no money creation)
 - **Authenticity**: Only key owners can spend their balances
-
-### Assumptions
-- **Discrete Log**: Hard to find {{< katex >}}x{{< /katex >}} given {{< katex >}}g^x{{< /katex >}} on Stark curve
-- **Decisional Diffie-Hellman**: ElGamal encryptions are indistinguishable
-- **Hash Function**: Fiat-Shamir transform uses secure hash
 
 ## Use Cases
 
@@ -110,26 +105,6 @@ const withdrawOp = account.withdraw({
 - **Confidential lending**: Private collateral amounts
 - **DAO treasuries**: Private governance token distributions
 
-## Performance Characteristics
-
-| Operation | Cairo Steps | Time (approx) |
-|-----------|-------------|---------------|
-| Fund | ~50K | <1 second |
-| Transfer | ~120K | 2-5 seconds |
-| Withdraw | ~80K | 1-3 seconds |
-| Rollover | ~30K | <1 second |
-
-*Times include proof generation on modern hardware*
-
-## Limitations
-
-### Balance Range
-- Maximum balance: {{< katex >}}2^{32} - 1{{< /katex >}} (~4.3 billion units)
-- Chosen for efficient brute-force decryption
-- Sufficient for most token denominations
-
-
-
 ## Roadmap
 
 ### Short Term
@@ -138,7 +113,6 @@ const withdrawOp = account.withdraw({
 - **Multi-token support**: Support multiple ERC20s in one contract
 
 ### Medium Term
-- **Layer 2 scaling**: Recursive proof aggregation
 - **Advanced compliance**: Threshold auditing, time-locked viewing
 - **DeFi primitives**: Native AMM, lending protocols
 

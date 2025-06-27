@@ -292,24 +292,6 @@ fn constructor(
     self.view.write(view);
 }
 ```
-
-### Dependencies
-
-- **Starknet Foundry**: Testing framework
-- **Custom ERC20**: Token implementation for STRK
-- **Cairo 2.8.4**: Contract language version
-
-### Gas Optimization
-
-The contract is optimized for Starknet's Cairo VM:
-
-| Operation | Cairo Steps | Optimization |
-|-----------|-------------|--------------|
-| Fund | ~50K | Single POE proof |
-| Transfer | ~120K | Efficient range proofs |
-| Withdraw | ~80K | Minimized operations |
-| Rollover | ~30K | Simple balance addition |
-
 ---
 
 ## Testing
@@ -324,9 +306,6 @@ Comprehensive test suite covers:
 ```bash
 # Run all tests
 scarb test
-
-# Deploy to testnet
-scarb run deploy_local
 ```
 
 The Cairo implementation provides a secure, efficient foundation for confidential payments on Starknet.
