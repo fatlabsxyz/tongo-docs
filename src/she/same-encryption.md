@@ -6,7 +6,7 @@ Proves that two ciphertexts for different public keys encrypt the same value.
 
 Prove that \\((L_1, R_1)\\) and \\((L_2, R_2)\\) encrypt the same message \\(b\\) for different keys \\(y_1\\) and \\(y_2\\):
 
-$$\{(L_1, R_1, L_2, R_2, g, y_1, y_2; b, r_1, r_2) : L_1 = g^b \cdot y_1^{r_1} \land R_1 = g^{r_1} \land L_2 = g^b \cdot y_2^{r_2} \land R_2 = g^{r_2}\}$
+$$\{(L_1, R_1, L_2, R_2, g, y_1, y_2; b, r_1, r_2) : L_1 = g^b \cdot y_1^{r_1} \land R_1 = g^{r_1} \land L_2 = g^b \cdot y_2^{r_2} \land R_2 = g^{r_2}\}$$
 
 ## Use Case
 

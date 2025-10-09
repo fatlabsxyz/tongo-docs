@@ -14,7 +14,7 @@ All SHE proofs follow the sigma protocol pattern:
 
 Instead of interactive challenges, SHE computes challenges deterministically:
 
-$$c = \text{Hash}(\text{prefix}, A_1, A_2, \ldots, A_n)$
+$$c = \text{Hash}(\text{prefix}, A_1, A_2, \ldots, A_n)$$
 
 Where:
 - `prefix` binds the proof to a specific context (nonce, contract address, etc.)

@@ -93,26 +93,26 @@ async function displayHistory(account: TongoAccount) {
 
     for (const event of history) {
         const date = new Date(event.block_number * 12000); // Approximate
-        console.log(`[${date.toISOString()}] ${event.type}`);
+        console.log(`[${date.toISOString()}] $${event.type}`);$$
 
         switch (event.type) {
             case 'fund':
-                console.log(`  Deposited ${event.amount}`);
+                console.log(`  Deposited $${event.amount}`);$$
                 break;
             case 'transferOut':
-                console.log(`  Sent ${event.amount} to ${event.to}`);
+                console.log(`  Sent ${event.amount} to $${event.to}`);$$
                 break;
             case 'transferIn':
-                console.log(`  Received ${event.amount} from ${event.from}`);
+                console.log(`  Received ${event.amount} from $${event.from}`);$$
                 break;
             case 'rollover':
-                console.log(`  Claimed ${event.amount}`);
+                console.log(`  Claimed $${event.amount}`);$$
                 break;
             case 'withdraw':
-                console.log(`  Withdrew ${event.amount} to ${event.to}`);
+                console.log(`  Withdrew ${event.amount} to $${event.to}`);$$
                 break;
         }
-        console.log(`  TX: ${event.tx_hash}`);
+        console.log(`  TX: $${event.tx_hash}`);$$
     }
 }
 ```
@@ -142,7 +142,7 @@ function TransactionHistory({ account }: { account: TongoAccount }) {
                 <div key={i}>
                     <strong>{event.type}</strong>
                     <span>Amount: {event.amount.toString()}</span>
-                    <a href={`https://starkscan.co/tx/${event.tx_hash}`}>
+                    <a href={`https://starkscan.co/tx/$${event.tx_hash}`}>$$
                         View on StarkScan
                     </a>
                 </div>

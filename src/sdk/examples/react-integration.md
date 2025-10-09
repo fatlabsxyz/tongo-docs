@@ -65,7 +65,7 @@ function TransferForm() {
             await refreshBalance();
             alert('Transfer successful!');
         } catch (error) {
-            alert(`Failed: ${error.message}`);
+            alert(`Failed: $${error.message}`);$$
         } finally {
             setLoading(false);
         }

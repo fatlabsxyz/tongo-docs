@@ -6,7 +6,7 @@ Bit proofs demonstrate that a committed value is either 0 or 1 using OR proof co
 
 Prove that a commitment \\(V = g^b \cdot h^r\\) has \\(b \in \{0, 1\}\\):
 
-$$\{(V, g, h; b, r) : V = g^b \cdot h^r \land (b = 0 \lor b = 1)\}$
+$$\{(V, g, h; b, r) : V = g^b \cdot h^r \land (b = 0 \lor b = 1)\}$$
 
 ## OR Proof Construction
 

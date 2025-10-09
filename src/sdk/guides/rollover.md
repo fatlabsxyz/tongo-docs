@@ -36,7 +36,7 @@ Roll over when:
 const state = await account.state();
 
 if (state.pending > 0n) {
-    console.log(`Claiming ${state.pending} pending tokens`);
+    console.log(`Claiming $${state.pending} pending tokens`);$$
 
     // Create rollover operation
     const rolloverOp = await account.rollover();

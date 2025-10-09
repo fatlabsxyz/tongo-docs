@@ -6,13 +6,13 @@ Range proofs demonstrate that a value lies within a specific range using bit dec
 
 Prove that a value \\(b\\) satisfies \\(b \in [0, 2^n)\\) where \\(n\\) is the bit length:
 
-$$\{(V, g, h; b, r) : V = g^b \cdot h^r \land b \in [0, 2^n)\}$
+$$\{(V, g, h; b, r) : V = g^b \cdot h^r \land b \in [0, 2^n)\}$$
 
 ## Binary Decomposition
 
 Any value \\(b < 2^n\\) can be written as:
 
-$$b = \sum_{i=0}^{n-1} b_i \cdot 2^i$
+$$b = \sum_{i=0}^{n-1} b_i \cdot 2^i$$
 
 Where each \\(b_i \in \{0, 1\}\\).
 
@@ -22,7 +22,7 @@ Where each \\(b_i \in \{0, 1\}\\).
 
 For each bit \\(b_i\\), create a commitment with independent randomness \\(r_i\\):
 
-$$V_i = g^{b_i} \cdot h^{r_i}$
+$$V_i = g^{b_i} \cdot h^{r_i}$$
 
 ### 2. Bit Proofs
 
@@ -32,9 +32,9 @@ Generate a bit proof for each \\(V_i\\) showing \\(b_i \in \{0, 1\}\\).
 
 The verifier computes:
 
-$$V_{\text{total}} = \prod_{i=0}^{n-1} V_i^{2^i} = \prod_{i=0}^{n-1} (g^{b_i} \cdot h^{r_i})^{2^i}$
+$$V_{\text{total}} = \prod_{i=0}^{n-1} V_i^{2^i} = \prod_{i=0}^{n-1} (g^{b_i} \cdot h^{r_i})^{2^i}$$
 
-$$= g^{\sum_{i=0}^{n-1} b_i \cdot 2^i} \cdot h^{\sum_{i=0}^{n-1} r_i \cdot 2^i} = g^b \cdot h^r$
+$$= g^{\sum_{i=0}^{n-1} b_i \cdot 2^i} \cdot h^{\sum_{i=0}^{n-1} r_i \cdot 2^i} = g^b \cdot h^r$$
 
 If all bit proofs verify and \\(V_{\text{total}} = V\\), then \\(b \in [0, 2^n)\\).
 

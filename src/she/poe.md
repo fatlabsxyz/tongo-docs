@@ -6,7 +6,7 @@ The POE protocol proves knowledge of a discrete logarithm without revealing it.
 
 Prove knowledge of \\(x\\) such that:
 
-$$y = g^x$
+$$y = g^x$$
 
 Where:
 - \\(g\\) is a known generator point
@@ -38,13 +38,13 @@ Where:
 
 The verification equation holds because:
 
-$$g^s = g^{k + c \cdot x} = g^k \cdot g^{c \cdot x} = A \cdot (g^x)^c = A \cdot y^c$
+$$g^s = g^{k + c \cdot x} = g^k \cdot g^{c \cdot x} = A \cdot (g^x)^c = A \cdot y^c$$
 
 ## Non-Interactive (Fiat-Shamir)
 
 Instead of interactive challenge, compute:
 
-$$c = \text{Hash}(\text{prefix}, A)$
+$$c = \text{Hash}(\text{prefix}, A)$$
 
 This makes the proof non-interactive and bindable to context.
 

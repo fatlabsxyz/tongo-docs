@@ -30,7 +30,7 @@ Each user generates a keypair \\((x, y = g^x)\\) where \\(g\\) is the Stark curv
 
 Balances are stored as ElGamal ciphertexts:
 
-$\\text{Enc}[y](b, r) = (g^b y^r, g^r)$
+$$\text{Enc}[y](b, r) = (g^b y^r, g^r)$$
 
 The encryption is **additively homomorphic**, allowing balance updates without decryption.
 

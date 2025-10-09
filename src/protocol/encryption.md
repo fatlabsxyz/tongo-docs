@@ -95,8 +95,8 @@ Note that \\(r = 1\\) is used for funding since the amount \\(b\\) is already pu
 ```rust
 // Cairo implementation (simplified)
 let funded_cipher = CipherBalance {
-    CL: (curve_ops::multiply(G, b) + curve_ops::multiply(y, 1)),
-    CR: curve_ops::multiply(G, 1)
+    L: (curve_ops::multiply(G, b) + curve_ops::multiply(y, 1)),
+    R: curve_ops::multiply(G, 1)
 };
 
 // Add to existing balance homomorphically

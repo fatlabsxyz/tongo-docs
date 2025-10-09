@@ -22,7 +22,7 @@ All three use the same blinding factor \\(r\\), proven via Pedersen commitment p
 
 For enhanced security, auditor keys can be distributed across multiple parties:
 
-$$y_a = g^{a_1 + a_2} = g^{a_1} \cdot g^{a_2} = y_{a_1} \cdot y_{a_2}$
+$$y_a = g^{a_1 + a_2} = g^{a_1} \cdot g^{a_2} = y_{a_1} \cdot y_{a_2}$$
 
 Individual auditors can compute partial decryptions:
 
@@ -48,7 +48,7 @@ struct Transfer {
 
 Each viewing key \\((y_v, L_v)\\) represents:
 
-$$L_v = g^b y_v^r$
+$$L_v = g^b y_v^r$$
 
 The sender proves each additional encryption is correctly formed using Pedersen commitment proofs.
 

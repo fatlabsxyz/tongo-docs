@@ -35,40 +35,27 @@ The Cairo implementation provides:
 ## Architecture
 
 ```
-┌─────────────────────────────────────────┐
-│          Client Application             │
-│                                         │
-│  ┌───────────────────────────────────┐ │
-│  │  Tongo SDK (@fatsolutions/tongo)  │ │
-│  │                                   │ │
-│  │  ┌─────────────────────────────┐ │ │
-│  │  │  SHE TypeScript             │ │ │
-│  │  │  (@fatsolutions/she)        │ │ │
-│  │  │                             │ │ │
-│  │  │  - Proof generation         │ │ │
-│  │  │  - Encryption/decryption    │ │ │
-│  │  │  - Balance operations       │ │ │
-│  │  └─────────────────────────────┘ │ │
-│  └───────────────────────────────────┘ │
-└─────────────────────────────────────────┘
-                    │
-                    │ Submit transaction
-                    ▼
-┌─────────────────────────────────────────┐
-│           Starknet Network              │
-│                                         │
-│  ┌───────────────────────────────────┐ │
-│  │  Tongo Contract (Cairo)           │ │
-│  │                                   │ │
-│  │  ┌─────────────────────────────┐ │ │
-│  │  │  SHE Cairo                  │ │ │
-│  │  │                             │ │ │
-│  │  │  - Proof verification       │ │ │
-│  │  │  - Cipher operations        │ │ │
-│  │  │  - Balance validation       │ │ │
-│  │  └─────────────────────────────┘ │ │
-│  └───────────────────────────────────┘ │
-└─────────────────────────────────────────┘
+Client Application
+    |
+    +-- Tongo SDK (@fatsolutions/tongo-sdk)
+        |
+        +-- SHE TypeScript (@fatsolutions/she)
+            - Proof generation
+            - Encryption/decryption
+            - Balance operations
+
+                |
+                | Submit transaction
+                v
+
+Starknet Network
+    |
+    +-- Tongo Contract (Cairo)
+        |
+        +-- SHE Cairo (she)
+            - Proof verification
+            - Cipher operations
+            - Balance validation
 ```
 
 ## Core Primitives

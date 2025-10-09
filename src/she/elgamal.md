@@ -6,7 +6,7 @@ ElGamal encryption over elliptic curves provides the foundation for Tongo's conf
 
 The ElGamal encryption scheme over the Stark curve is defined as:
 
-$$\text{Enc}[y](b, r) = (L, R) = (g^b \cdot y^r, g^r)$
+$$\text{Enc}[y](b, r) = (L, R) = (g^b \cdot y^r, g^r)$$
 
 Where:
 - \\(g\\) is the Stark curve generator
@@ -20,11 +20,11 @@ Where:
 
 Given two ciphertexts encrypting \\(b_1\\) and \\(b_2\\):
 
-$$\text{Enc}[y](b_1, r_1) \cdot \text{Enc}[y](b_2, r_2) = \text{Enc}[y](b_1 + b_2, r_1 + r_2)$
+$$\text{Enc}[y](b_1, r_1) \cdot \text{Enc}[y](b_2, r_2) = \text{Enc}[y](b_1 + b_2, r_1 + r_2)$$
 
 This allows adding encrypted balances without decryption:
 
-$$(L_1, R_1) \cdot (L_2, R_2) = (L_1 \cdot L_2, R_1 \cdot R_2)$
+$$(L_1, R_1) \cdot (L_2, R_2) = (L_1 \cdot L_2, R_1 \cdot R_2)$$
 
 ### Semantic Security
 
@@ -50,7 +50,7 @@ Since \\(b\\) is bounded (e.g., \\([0, 2^{32})\\)), this can be computed efficie
 
 Prove that \\((L, R)\\) is a well-formed ElGamal ciphertext:
 
-$$\{(L, R, g, y; b, r) : L = g^b \cdot y^r \land R = g^r\}$
+$$\{(L, R, g, y; b, r) : L = g^b \cdot y^r \land R = g^r\}$$
 
 ### Protocol
 
