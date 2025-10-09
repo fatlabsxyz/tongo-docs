@@ -2,211 +2,244 @@
 
 The SHE library provides low-level cryptographic primitives for ElGamal encryption and zero-knowledge proof generation over the Stark elliptic curve. It serves as the foundation for all cryptographic operations in Tongo.
 
-> **Note**: The SHE library is written in Rust and used internally by the Tongo SDK. This documentation covers the conceptual API that the TypeScript SDK wraps through the `@fatsolutions/she` package.
+## Dual Implementation
 
-## Core Concepts
+SHE is implemented in **two languages** for different environments:
 
-### Elliptic Curve Setup
+### TypeScript Implementation
 
-SHE operates over the Stark curve with carefully chosen generators:
+**Package**: `@fatsolutions/she`
+**Version**: 0.1.0
+**Use Case**: Client-side proof generation and encryption
+**Location**: `/packages/typescript`
 
-```typescript
-import { GENERATOR as g } from '@fatsolutions/she';
+The TypeScript implementation provides:
+- Off-chain proof generation (fund, transfer, withdraw, rollover)
+- ElGamal encryption and decryption
+- All zero-knowledge protocols (POE, bit, range, same encryption)
+- Used by the Tongo SDK for creating operations
 
-// Primary generator (standard Stark curve generator)
-const g: ProjectivePoint;
+### Cairo Implementation
 
-// Secondary generator h is derived internally for Pedersen commitments
+**Package**: `she`
+**Version**: 0.3.0
+**Use Case**: On-chain proof verification
+**Location**: `/packages/cairo`
+
+The Cairo implementation provides:
+- Smart contract proof verification
+- ElGamal ciphertext operations
+- Optimized for Starknet VM execution
+- Used by Tongo contracts for validating proofs
+
+## Architecture
+
+```
+┌─────────────────────────────────────────┐
+│          Client Application             │
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │  Tongo SDK (@fatsolutions/tongo)  │ │
+│  │                                   │ │
+│  │  ┌─────────────────────────────┐ │ │
+│  │  │  SHE TypeScript             │ │ │
+│  │  │  (@fatsolutions/she)        │ │ │
+│  │  │                             │ │ │
+│  │  │  - Proof generation         │ │ │
+│  │  │  - Encryption/decryption    │ │ │
+│  │  │  - Balance operations       │ │ │
+│  │  └─────────────────────────────┘ │ │
+│  └───────────────────────────────────┘ │
+└─────────────────────────────────────────┘
+                    │
+                    │ Submit transaction
+                    ▼
+┌─────────────────────────────────────────┐
+│           Starknet Network              │
+│                                         │
+│  ┌───────────────────────────────────┐ │
+│  │  Tongo Contract (Cairo)           │ │
+│  │                                   │ │
+│  │  ┌─────────────────────────────┐ │ │
+│  │  │  SHE Cairo                  │ │ │
+│  │  │                             │ │ │
+│  │  │  - Proof verification       │ │ │
+│  │  │  - Cipher operations        │ │ │
+│  │  │  - Balance validation       │ │ │
+│  │  └─────────────────────────────┘ │ │
+│  └───────────────────────────────────┘ │
+└─────────────────────────────────────────┘
 ```
 
-## ElGamal Encryption
+## Core Primitives
 
-### Basic Encryption
+Both implementations provide the same cryptographic primitives:
 
-Encrypt a balance amount:
+### ElGamal Encryption
 
-```typescript
-import { cipherBalance } from '@fatsolutions/she';
+Encrypt balances: \\(\text{Enc}[y](b, r) = (g^b y^r, g^r)\\)
 
-// Internally used by the SDK
-// Creates ciphertext (L, R) = (g^amount * pubkey^randomness, g^randomness)
+**TypeScript**: Proof generation for funding, transfers
+**Cairo**: Ciphertext arithmetic and validation
+
+### Zero-Knowledge Proofs
+
+#### POE (Proof of Exponent)
+Prove \\(y = g^x\\) without revealing \\(x\\)
+
+**TypeScript**: Generate proofs
+**Cairo**: Verify proofs on-chain
+
+#### Range Proofs
+Prove \\(b \in [0, 2^{32})\\) using bit decomposition
+
+**TypeScript**: ~500ms generation (32-bit)
+**Cairo**: ~260K Cairo steps verification
+
+#### Same Encryption
+Prove two ciphertexts encrypt the same value
+
+**TypeScript**: Generate multi-party proofs
+**Cairo**: Verify consistency on-chain
+
+## TypeScript API
+
+### Installation
+
+```bash
+npm install @fatsolutions/she
 ```
 
-### Decryption
+### Basic Usage
 
 ```typescript
-import { decipherBalance } from '@fatsolutions/she';
+import { GENERATOR as g, proveFund, decipherBalance } from "@fatsolutions/she";
 
-// Decrypt a ciphertext using Baby-step Giant-step algorithm
-function decipherBalance(
-  secretKey: bigint,
-  L: ProjectivePoint,
-  R: ProjectivePoint
-): bigint;
+// Generate a fund proof
+const { inputs, proof, newBalance } = proveFund(
+    privateKey,
+    amount,
+    currentBalance,
+    currentCipher,
+    nonce
+);
+
+// Decrypt a balance
+const balance = decipherBalance(privateKey, L, R);
 ```
 
-### Homomorphic Operations
-
-ElGamal ciphertexts support additive homomorphism, allowing encrypted balance updates without decryption.
-
-## Zero-Knowledge Proofs
-
-### Proof of Fund
-
-Proves knowledge of private key for funding operations:
+### Available Protocols
 
 ```typescript
-import { proveFund } from '@fatsolutions/she';
-
-function proveFund(
-  secret: bigint,
-  amount: bigint,
-  currentBalance: bigint,
-  currentCipher: CipherBalance,
-  nonce: bigint
-): { inputs: FundInputs; proof: ProofOfFund; newBalance: CipherBalance };
+import {
+    proveFund,
+    proveTransfer,
+    proveWithdraw,
+    proveRollover,
+    proveRagequit,
+    prove_audit,
+} from "@fatsolutions/she";
 ```
 
-### Transfer Proofs
+For detailed protocol documentation, see the [SHE Cryptography](../she/README.md) section.
 
-Complex proofs for confidential transfers:
+## Cairo API
 
-```typescript
-import { proveTransfer } from '@fatsolutions/she';
+### Contract Integration
 
-function proveTransfer(
-  senderSecret: bigint,
-  receiverPubkey: ProjectivePoint,
-  currentBalance: bigint,
-  transferAmount: bigint,
-  currentCipher: CipherBalance,
-  nonce: bigint
-): { inputs: TransferInputs; proof: ProofOfTransfer; newBalance: CipherBalance };
+```cairo
+use she::protocols::poe::verify as verify_poe;
+use she::protocols::ElGamal::verify as verify_elgamal;
+use she::protocols::range::verify as verify_range;
+
+// Verify a fund proof
+let valid = verify_poe(y, g, A, c, s);
 ```
 
-### Withdrawal Proofs
+### Available Modules
 
-```typescript
-import { proveWithdraw } from '@fatsolutions/she';
-
-function proveWithdraw(
-  secret: bigint,
-  currentBalance: bigint,
-  withdrawAmount: bigint,
-  recipientAddress: bigint,
-  currentCipher: CipherBalance,
-  nonce: bigint
-): { inputs: WithdrawInputs; proof: ProofOfWithdraw; newBalance: CipherBalance };
-```
-
-### Rollover Proofs
-
-```typescript
-import { proveRollover } from '@fatsolutions/she';
-
-function proveRollover(
-  secret: bigint,
-  nonce: bigint
-): { inputs: RolloverInputs; proof: ProofOfRollover };
-```
-
-### Ragequit Proofs
-
-```typescript
-import { proveRagequit } from '@fatsolutions/she';
-
-function proveRagequit(
-  secret: bigint,
-  currentCipher: CipherBalance,
-  nonce: bigint,
-  recipientAddress: bigint,
-  balance: bigint
-): { inputs: RagequitInputs; proof: ProofOfRagequit; newBalance: CipherBalance };
-```
-
-## Audit System
-
-### Audit Proofs
-
-Generate proofs for auditor encryption:
-
-```typescript
-import { prove_audit, verify_audit } from '@fatsolutions/she';
-
-function prove_audit(
-  senderSecret: bigint,
-  amount: bigint,
-  cipherBalance: CipherBalance,
-  auditorPubkey: ProjectivePoint
-): { inputs: AuditInputs; proof: ProofOfAudit };
-```
-
-### Balance Assertion
-
-Verify a hint matches an encrypted balance:
-
-```typescript
-import { assertBalance } from '@fatsolutions/she';
-
-function assertBalance(
-  secretKey: bigint,
-  hint: bigint,
-  L: ProjectivePoint,
-  R: ProjectivePoint
-): boolean;
-```
-
-## Type Definitions
-
-```typescript
-interface CipherBalance {
-  L: ProjectivePoint;  // g^amount * pubkey^randomness
-  R: ProjectivePoint;  // g^randomness
-}
-
-interface ProofOfFund {
-  Ax: ProjectivePoint;
-  sx: bigint;
-}
-
-interface ProofOfTransfer {
-  // Complex structure with multiple sub-proofs
-  // See Transfer Protocol documentation
-}
-
-interface ProofOfWithdraw {
-  // See Withdrawal documentation
-}
-
-interface ProofOfRollover {
-  Ay: ProjectivePoint;
-  sy: bigint;
-}
-```
-
-## Usage in Tongo SDK
-
-The Tongo SDK wraps all SHE functionality, so you typically don't need to use SHE directly. The SDK's `Account` class automatically:
-
-- Generates proofs for all operations
-- Handles encryption and decryption
-- Manages nonces and challenges
-- Verifies balance hints
-
-For most applications, use the [Tongo SDK](../sdk/README.md) instead of SHE directly.
+- `she::protocols::poe` - Proof of Exponent
+- `she::protocols::poe2` - Double exponent proofs
+- `she::protocols::poeN` - N-exponent proofs
+- `she::protocols::bit` - Bit proofs (OR construction)
+- `she::protocols::range` - Range proofs via bit decomposition
+- `she::protocols::ElGamal` - ElGamal encryption proofs
+- `she::protocols::SameEncryption` - Same message proofs
+- `she::protocols::SameEncryptionUnknownRandom` - Without known randomness
 
 ## Performance
 
-Approximate performance on modern hardware:
+### TypeScript (Client-Side)
 
 | Operation | Time |
 |-----------|------|
-| Key generation | < 1ms |
-| Encryption | < 1ms |
-| Decryption (with hint) | < 1ms |
-| Decryption (brute-force, 1M range) | ~100ms |
 | Fund proof | ~50ms |
 | Transfer proof | 2-3s |
 | Withdraw proof | 1-2s |
+| Rollover proof | ~10ms |
+| Decryption (with hint) | < 1ms |
+| Decryption (brute-force 1M) | ~100ms |
 
-The SHE library provides the cryptographic foundation for all Tongo operations, implementing state-of-the-art zero-knowledge proofs with efficient elliptic curve arithmetic.
+### Cairo (On-Chain)
+
+| Operation | Cairo Steps |
+|-----------|-------------|
+| POE verification | ~2,500 |
+| ElGamal verification | ~5,000 |
+| Bit proof verification | ~8,000 |
+| Range proof (32-bit) | ~260,000 |
+| Full transfer verification | ~300,000 |
+
+## Repository Structure
+
+```
+she/
+├── packages/
+│   ├── typescript/          # TypeScript implementation
+│   │   ├── src/
+│   │   │   ├── protocols/   # ZK protocols
+│   │   │   ├── types.ts     # Type definitions
+│   │   │   ├── constants.ts # Curve parameters
+│   │   │   └── utils.ts     # Crypto utilities
+│   │   └── package.json
+│   │
+│   └── cairo/               # Cairo implementation
+│       ├── src/
+│       │   ├── protocols/   # ZK protocol verifiers
+│       │   ├── lib.cairo    # Main library
+│       │   └── utils.cairo  # Cairo utilities
+│       └── Scarb.toml
+│
+├── pnpm-workspace.yaml
+└── README.md
+```
+
+## Development
+
+### TypeScript
+
+```bash
+cd packages/typescript
+pnpm install
+pnpm build
+pnpm test
+```
+
+### Cairo
+
+```bash
+cd packages/cairo
+scarb build
+scarb test
+```
+
+## Next Steps
+
+For cryptographic protocol details:
+- [ElGamal Encryption](../she/elgamal.md)
+- [Zero-Knowledge Proofs](../she/proofs.md)
+- [POE Protocol](../she/poe.md)
+- [Range Proofs](../she/range.md)
+
+For SDK usage:
+- [Tongo SDK Documentation](../sdk/README.md)

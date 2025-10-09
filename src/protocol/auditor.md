@@ -87,7 +87,7 @@ The sender creates new encryptions of the same amount:
 
 The sender proves the new encryptions contain the same amount as the original transfer:
 
-$$\frac{TL}{L} = \left(\frac{TR}{R}\right)^x$
+$$\frac{TL}{L} = \left(\frac{TR}{R}\right)^x$$
 
 This equality holds if and only if \\(b_0 = b\\) (the amounts match).
 
@@ -105,9 +105,9 @@ The complete ex-post proof \\(\pi_{\text{expost}}\\) demonstrates:
 
 The consistency check works because:
 
-$$\frac{TL}{L} = \frac{g^{b_0} y^{r_0}}{g^b y^r} = g^{b_0-b} y^{r_0-r}$
+$$\frac{TL}{L} = \frac{g^{b_0} y^{r_0}}{g^b y^r} = g^{b_0-b} y^{r_0-r}$$
 
-$$\left(\frac{TR}{R}\right)^x = \left(\frac{g^{r_0}}{g^r}\right)^x = g^{(r_0-r)x} = y^{r_0-r}$
+$$\left(\frac{TR}{R}\right)^x = \left(\frac{g^{r_0}}{g^r}\right)^x = g^{(r_0-r)x} = y^{r_0-r}$$
 
 These are equal only when \\(b_0 = b\\), proving amount consistency.
 
@@ -149,7 +149,7 @@ Tongo supports various compliance frameworks:
 
 Multiple auditors with threshold decryption:
 
-$$y_a = \sum_{i=1}^n w_i \cdot y_{a_i}$
+$$y_a = \sum_{i=1}^n w_i \cdot y_{a_i}$$
 
 Where \\(w_i\\) are threshold weights and \\(t\\) out of \\(n\\) auditors are required for decryption.
 

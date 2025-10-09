@@ -98,14 +98,14 @@ Where \\(b^\prime = b_0 - b\\) is the sender's balance after the transfer.
 The full proof statement combines all requirements:
 
 $$\begin{aligned}
-\pi_{\text{transfer}}: \{&(g, y_s, y_r, L_0, R_0, L_s, L_r, R; x, b, b^\prime, r) : \\\\
+\pi_{\text{transfer}}: \\{&(g, y_s, y_r, L_0, R_0, L_s, L_r, R; x, b, b^\prime, r) : \\\\
 &y_s = g^x \\\\
 &\land R = g^r \\\\
 &\land L_s = g^b y_s^r \\\\
 &\land L_r = g^b y_r^r \\\\
 &\land b \in [0, b_{\max}) \\\\
 &\land L_0/L_s = g^{b^\prime}(R_0/R)^x \\\\
-&\land b^\prime \in [0, b_{\max})\}
+&\land b^\prime \in [0, b_{\max})\\}
 \end{aligned}$$
 
 Where \\((L_0, R_0)\\) represents the sender's current encrypted balance.
