@@ -129,10 +129,6 @@ h1 {
     margin-top: 2rem;
     margin-bottom: 1.5rem;
     color: var(--deep-orange);
-    text-shadow:
-        0 0 30px rgba(255, 77, 0, 0.5),
-        0 0 60px rgba(255, 77, 0, 0.3),
-        0 2px 4px rgba(0, 0, 0, 0.8);
     letter-spacing: -0.02em;
     position: relative;
 }
@@ -155,7 +151,6 @@ h2 {
     margin-top: 2rem;
     margin-bottom: 1rem;
     color: var(--warm-coral);
-    text-shadow: 0 0 15px rgba(255, 105, 58, 0.3);
     letter-spacing: -0.01em;
 }
 
@@ -179,7 +174,6 @@ a {
 
 a:hover {
     color: var(--warm-coral);
-    text-shadow: 0 0 10px rgba(255, 77, 0, 0.5);
 }
 
 /* Code Blocks - Angular design, no border radius */
@@ -325,7 +319,6 @@ th {
     font-weight: 700;
     padding: 1rem;
     border-bottom: 2px solid var(--deep-orange);
-    text-shadow: 0 0 10px rgba(255, 77, 0, 0.3);
     letter-spacing: 0.02em;
 }
 
@@ -391,10 +384,6 @@ tr:hover {
     color: var(--deep-orange);
     font-weight: 800;
     font-size: 1.4rem;
-    text-shadow:
-        0 0 30px rgba(255, 77, 0, 0.6),
-        0 0 60px rgba(255, 77, 0, 0.4),
-        0 2px 8px rgba(0, 0, 0, 0.8);
     letter-spacing: -0.02em;
     padding: 1rem 0;
 }
@@ -475,21 +464,6 @@ hr {
 }
 
 /* Enhanced Animations */
-@keyframes glow {
-    0%, 100% {
-        text-shadow:
-            0 0 30px rgba(255, 77, 0, 0.5),
-            0 0 60px rgba(255, 77, 0, 0.3),
-            0 2px 4px rgba(0, 0, 0, 0.8);
-    }
-    50% {
-        text-shadow:
-            0 0 40px rgba(255, 77, 0, 0.7),
-            0 0 80px rgba(255, 77, 0, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.8);
-    }
-}
-
 @keyframes pulse-border {
     0%, 100% {
         border-color: rgba(255, 77, 0, 0.3);
@@ -497,10 +471,6 @@ hr {
     50% {
         border-color: rgba(255, 77, 0, 0.6);
     }
-}
-
-h1 {
-    animation: glow 4s ease-in-out infinite;
 }
 
 .chapter.active {
