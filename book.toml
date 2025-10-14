@@ -1,5 +1,5 @@
 [book]
-title = "Tongo Documentation"
+title = "TONGO — by FAT SOLUTIONS"
 authors = ["Fat Solutions"]
 language = "en"
 multilingual = false
@@ -14,6 +14,7 @@ preferred-dark-theme = "navy"
 git-repository-url = "https://github.com/fatlabsxyz/tongo"
 edit-url-template = "https://github.com/fatlabsxyz/tongo/edit/master/packages/tongo-sdk/docs/{path}"
 additional-css = ["theme/custom.css"]
+additional-js = ["theme/footer.js"]
 mathjax-support = true
 
 [output.html.mathjax]
