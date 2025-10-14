@@ -24,7 +24,8 @@ const provider = new RpcProvider({
     specVersion: "0.8.1",
 });
 
-const tongoAddress = "0x028..."; // Tongo contract address
+// Tongo contract on Sepolia (wraps STRK with 1:1 rate)
+const tongoAddress = "0x00b4cca30f0f641e01140c1c388f55641f1c3fe5515484e622b6cb91d8cee585";
 
 // Create account with bigint private key
 const privateKey = 82130983n;

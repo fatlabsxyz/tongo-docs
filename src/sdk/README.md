@@ -32,7 +32,7 @@ High-level application interface providing:
 ## Package Information
 
 - **Package**: `@fatsolutions/tongo-sdk`
-- **Current Version**: 1.1.2
+- **Current Version**: 1.2.0
 - **License**: Apache-2.0
 - **Repository**: [github.com/fatlabsxyz/tongo](https://github.com/fatlabsxyz/tongo)
 
@@ -52,12 +52,12 @@ The SDK works on:
 
 Deployed Tongo Contracts:
 - **Mainnet**: `0x0415f2c3b16cc43856a0434ed151888a5797b6a22492ea6fd41c62dbb4df4e6c` (USDC wrapper)
-- **Sepolia**: `0x028798470f0939d26aab8a3dcb144b9045fb113867ae205ad59b1b47ec904f00` (Test token)
+- **Sepolia**: `0x00b4cca30f0f641e01140c1c388f55641f1c3fe5515484e622b6cb91d8cee585` (STRK wrapper, 1:1 rate)
 
 ## Prerequisites
 
 - **Node.js**: v18 or higher
-- **Starknet.js**: v7.0.0 or higher (peer dependency)
+- **Starknet.js**: v8.0.0 or higher (peer dependency)
 - **TypeScript**: v5.0 or higher (recommended)
 
 ## Next Steps

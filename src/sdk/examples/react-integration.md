@@ -20,7 +20,8 @@ function useTongoAccount() {
     useEffect(() => {
         if (account && provider) {
             const tongoPrivateKey = 82130983n;
-            const tongoAddress = "0x028...";
+            // Tongo contract on Sepolia (wraps STRK with 1:1 rate)
+            const tongoAddress = "0x00b4cca30f0f641e01140c1c388f55641f1c3fe5515484e622b6cb91d8cee585";
             const tAccount = new TongoAccount(tongoPrivateKey, tongoAddress, provider);
             setTongoAccount(tAccount);
             refreshBalance();
@@ -60,7 +61,7 @@ function TransferForm() {
                 to: recipientPubKey,
                 amount: BigInt(amount)
             });
-            const tx = await account.execute([transferOp.toCalldata()]);
+            const tx = await account.execute(transferOp.toCalldata());
             await provider.waitForTransaction(tx.transaction_hash);
             await refreshBalance();
             alert('Transfer successful!');

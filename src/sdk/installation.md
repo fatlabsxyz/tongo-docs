@@ -30,7 +30,7 @@ npm install starknet
 
 | Tongo SDK | Starknet.js | Node.js |
 |-----------|-------------|---------|
-| 1.1.x     | ^7.0.0      | >=18    |
+| 1.2.0     | ^8.0.0      | >=18    |
 
 ## TypeScript Support
 
