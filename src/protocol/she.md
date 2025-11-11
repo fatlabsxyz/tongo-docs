@@ -1,6 +1,6 @@
 # Starknet Homomorphic Encryption (SHE)
 
-The SHE library provides low-level cryptographic primitives for ElGamal encryption and zero-knowledge proof generation over the Stark elliptic curve. It serves as the foundation for all cryptographic operations in Tongo.
+The SHE library provides low-level cryptographic primitives for some Sigma protocols, this includes ElGamal encryption and zero-knowledge proof generation over the Stark elliptic curve. It serves as the foundation for all cryptographic operations in Tongo.
 
 ## Dual Implementation
 
@@ -9,27 +9,23 @@ SHE is implemented in **two languages** for different environments:
 ### TypeScript Implementation
 
 **Package**: `@fatsolutions/she`
-**Version**: 0.1.0
+**Version**: 0.4.0
 **Use Case**: Client-side proof generation and encryption
 **Location**: `/packages/typescript`
 
 The TypeScript implementation provides:
 - Off-chain proof generation (fund, transfer, withdraw, rollover)
-- ElGamal encryption and decryption
-- All zero-knowledge protocols (POE, bit, range, same encryption)
 - Used by the Tongo SDK for creating operations
 
 ### Cairo Implementation
 
 **Package**: `she`
-**Version**: 0.3.0
+**Version**: 0.4.0
 **Use Case**: On-chain proof verification
 **Location**: `/packages/cairo`
 
 The Cairo implementation provides:
 - Smart contract proof verification
-- ElGamal ciphertext operations
-- Optimized for Starknet VM execution
 - Used by Tongo contracts for validating proofs
 
 ## Architecture

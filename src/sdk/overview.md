@@ -10,25 +10,6 @@ The Tongo TypeScript SDK provides a comprehensive interface for building confide
 - **Encryption Handling**: Transparent management of encrypted balances
 - **Starknet Integration**: Seamless integration with Starknet wallets and providers
 
-## Architecture
-
-The SDK consists of two main layers:
-
-### 1. SHE (Starknet Homomorphic Encryption)
-
-Low-level cryptographic primitives for:
-- ElGamal encryption over the Stark curve
-- Zero-knowledge proof generation (POE, PED, RAN)
-- Homomorphic balance operations
-
-### 2. Tongo SDK
-
-High-level application interface providing:
-- `Account` class for managing Tongo accounts
-- Operation objects for transactions (`FundOperation`, `TransferOperation`, etc.)
-- State management and decryption utilities
-- Event querying and transaction history
-
 ## Package Information
 
 - **Package**: `@fatsolutions/tongo-sdk`
@@ -36,13 +17,6 @@ High-level application interface providing:
 - **License**: Apache-2.0
 - **Repository**: [github.com/fatlabsxyz/tongo-docs](https://github.com/fatlabsxyz/tongo-docs)
 
-## Quick Links
-
-- [Installation](installation.md) - Install the SDK
-- [Quick Start](quick-start.md) - Your first Tongo transaction
-- [Core Concepts](concepts/accounts.md) - Understand the fundamentals
-- [API Reference](api/account.md) - Complete API documentation
-- [Examples](examples/complete-workflow.md) - Real-world code examples
 
 ## Supported Networks
 
@@ -54,14 +28,11 @@ Deployed Tongo Contracts:
 - **Mainnet**: `0x0415f2c3b16cc43856a0434ed151888a5797b6a22492ea6fd41c62dbb4df4e6c` (USDC wrapper)
 - **Sepolia**: `0x00b4cca30f0f641e01140c1c388f55641f1c3fe5515484e622b6cb91d8cee585` (STRK wrapper, 1:1 rate)
 
-## Prerequisites
 
-- **Node.js**: v18 or higher
-- **Starknet.js**: v8.0.0 or higher (peer dependency)
-- **TypeScript**: v5.0 or higher (recommended)
+## Quick Links
 
-## Next Steps
-
-1. [Install the SDK](installation.md)
-2. [Follow the Quick Start guide](quick-start.md)
-3. [Learn about Accounts and Operations](concepts/accounts.md)
+- [Installation](installation.md) - Install the SDK
+- [Quick Start](quick-start.md) - Your first Tongo transaction
+- [Core Concepts](concepts/accounts.md) - Understand the fundamentals
+- [API Reference](api/account.md) - Complete API documentation
+- [Examples](examples/complete-workflow.md) - Real-world code examples

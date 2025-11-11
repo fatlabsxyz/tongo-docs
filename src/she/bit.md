@@ -1,184 +1,64 @@
 # Bit Proofs
+This protocol is usded to prove that a committed value is either zeor or one without revealing which one is correct. It is a fundamental piece of the Range protocol. Given a commitment of the form
+$$
+V = g^b h^r
+$$
+where \\(g\\) and \\(h\\) are two generator points with discrete log relation unknown, \\(b\\) is either \\(0\\) or \\(1\\) and \\(r\\) is a blinding factor. We have two path here
+1. \\(b\\) is  \\(0\\), then \\(V = h^r\\) 
+2. \\(b\\) is  \\(1\\), then \\(\frac{V}{g} = h^r\\) 
+
+Note that in each cases it is enough to use a POE to show knowledge of \\(r\\). Two show that one of the paths is the correct one without revealing which one is the case, we have to combine two POE protocols with an OR statement.
+
+> **Note**: Given two Sigma protocols, the way of combine them in an OR statement is well known. The idea is that the prover will use the standard protocol for the statement that is true (i.e. that can be proven) and simulate a valid transcript for the statment that is false. On validation, the verifier will know that only one of the statement is simulated but it will be imposible to known which one it is.  
 
 Bit proofs demonstrate that a committed value is either 0 or 1 using OR proof construction.
 
-## Statement
+## Simulator for POE
+A valid transcript for the [POE](poe.md) protocol is a triad \\((A, c, s)\\) that passes the validation check of the verifier. The POE protocol is used to show, given a  \\(y\\), knowledge of \\(x\\) shuch that \\(y = g^x\\). A simulator for this protocols is an algorithm that, given \\(y\\), produces a valid transcript, without knowledge of \\(x\\). In this case the simulator is
+$$\begin{array}{ll}
+    Sim\left(y,g\right) &\rightarrow  (A, c,s ): \lbrace \\\\
+    & c \leftarrow \mathbb{F}_p^{\*}\\\\
+    & s \leftarrow \mathbb{F}_p^{\*} \\\\
+    & A = g^s/y^c \\\\
+    & \text{returns} (A,c,s) \\\\
+    \rbrace &
+    \end{array}
+$$
+this transcript will pass the verifier because
+$$
+g^s = A y^c = \dfrac{g^s}{y^c} y^c = g^s
+$$
 
-Prove that a commitment \\(V = g^b \cdot h^r\\) has \\(b \in \{0, 1\}\\):
+> **Aclaration**: Even though the simulaton can produce a valid proof for the POE protocol, it can never be used to convince to a verifier by engaging the a real interaction. In Sigma protocols the challenge \\(c\\) is chosen by the verifier after all the messages \\(A\\) were committed by the prover. The flow of the simulator implies that the message \\(A\\) is to be selected after the prover sees the challenge.
 
-$$\{(V, g, h; b, r) : V = g^b \cdot h^r \land (b = 0 \lor b = 1)\}$$
+## Protocol (Interactive)
+Let say we are in the fisrt case, that is, we have \\(b=0\\), the commitment \\(V\\) is
+$$
+    V = h^r
+$$
 
-## OR Proof Construction
+![caption](../img/bit0.png)
 
-The proof works by showing:
-- **If \\(b = 0\\)**: Then \\(V = h^r\\) (prove with POE for \\(r\\))
-- **If \\(b = 1\\)**: Then \\(V/g = h^r\\) (prove with POE for \\(r\\))
+If we are in the second case, that is, we have \\(b=1\\), the commitment \\(V\\) is
+$$
+    V = g\ h^r
+$$
 
-Without revealing which case is true!
+![caption](../img/bit1.png)
 
-## Protocol
+Note that in both cases the verifier performs the same steps. The prove must perform different steps according what POE is going to be simulated. In both cases the prover sends $c_0$, even in the case that $c_0$ is given by the simulator. This is part of the protocol and it is to avoid revealing which $c_i$ was simulated. 
 
-**Prover** (knows \\(b \in \{0,1\}\\) and \\(r\\)):
 
-For \\(b = 0\\):
-```
-Real proof for V = h^r:
-  k0 ← random
-  A0 = h^k0
-  
-Simulated proof for V/g = h^r:
-  s1, c1 ← random
-  A1 = h^s1 / (V/g)^c1
+## Cost Analysis (EC Operations)
 
-Combine:
-  c = Hash(prefix, A0, A1)
-  c0 = c ⊕ c1
-  s0 = k0 + c0·r
-```
+### Prover Complexity
+- 3 EC multiplications
+- 1 EC addition
 
-For \\(b = 1\\):
-```
-Simulated proof for V = h^r:
-  s0, c0 ← random
-  A0 = h^s0 / V^c0
-
-Real proof for V/g = h^r:
-  k1 ← random
-  A1 = h^k1
-  
-Combine:
-  c = Hash(prefix, A0, A1)
-  c1 = c ⊕ c0
-  s1 = k1 + c1·r
-```
-
-**Verifier**:
-```
-Recompute c = Hash(prefix, A0, A1)
-Compute c1 = c ⊕ c0
-Check: h^s0 == A0 · V^c0          [POE for b=0 case]
-Check: h^s1 == A1 · (V/g)^c1      [POE for b=1 case]
-```
-
-## Simulated POE
-
-Key technique: Generate fake proof for false case:
-
-```typescript
-function simulatePOE(
-  y: ProjectivePoint,
-  gen: ProjectivePoint
-): { A: ProjectivePoint; c: bigint; s: bigint } {
-  const s = generateRandom();
-  const c = generateRandom();
-  const A = gen.multiply(s).subtract(y.multiply(c));
-  return { A, c, s };
-}
-```
-
-This produces a valid-looking transcript for any statement!
-
-## Implementation
-
-### TypeScript
-
-```typescript
-function proveBit(
-  bit: 0 | 1,
-  random: bigint,
-  g: ProjectivePoint,
-  h: ProjectivePoint,
-  prefix: bigint
-): { inputs: BitInputs; proof: BitProofWithPrefix } {
-  if (bit === 0) {
-    // Real proof for V = h^r
-    const V = h.multiply(random);
-    const V1 = V.subtract(g);
-    
-    // Simulate proof for V/g = h^r
-    const { A: A1, c: c1, s: s1 } = simulatePOE(V1, h);
-    
-    // Real proof for V = h^r
-    const k = generateRandom();
-    const A0 = h.multiply(k);
-    
-    const c = compute_challenge(prefix, [A0, A1]);
-    const c0 = c ^ c1;
-    const s0 = compute_s(k, random, c0);
-    
-    return {
-      inputs: { V, g, h },
-      proof: { A0, A1, prefix, c0, s0, s1 }
-    };
-  } else {
-    // Similar for bit = 1, but swap real and simulated
-    // ...
-  }
-}
-```
-
-### Verification
-
-```typescript
-function verifyBit(
-  V: ProjectivePoint,
-  g: ProjectivePoint,
-  h: ProjectivePoint,
-  A0: ProjectivePoint,
-  A1: ProjectivePoint,
-  c: bigint,
-  c0: bigint,
-  s0: bigint,
-  s1: bigint
-): boolean {
-  const c1 = c ^ c0;
-  
-  // Verify b=0 case
-  if (!poe_verify(V, h, A0, c0, s0)) {
-    return false;
-  }
-  
-  // Verify b=1 case
-  const V1 = V.subtract(g);
-  if (!poe_verify(V1, h, A1, c1, s1)) {
-    return false;
-  }
-  
-  return true;
-}
-```
-
-## Cost Analysis
-
-### Prover
-- 1 real POE proof
-- 1 simulated POE proof
-- 1 hash computation
-- Time: ~20ms
-
-### Verifier
-- 2 POE verifications
-- 1 hash computation
+### Verifier Complexity
 - 4 EC multiplications
-- 3 EC additions
-- Time: ~2-3ms
+- 3 EC addition
 
-### Cairo
-- 4 `ec_mul` operations
-- 3 `ec_add` operations
-- ~8,000 Cairo steps per bit
+## Usage in Tongo
 
-## Use in Range Proofs
-
-Bit proofs are the building blocks for range proofs:
-
-For a 32-bit value \\(b = \sum_{i=0}^{31} b_i \cdot 2^i\\):
-
-1. Commit to each bit: \\(V_i = g^{b_i} \cdot h^{r_i}\\)
-2. Prove each \\(b_i \in \{0, 1\}\\) using bit proof
-3. Verify commitment consistency: \\(\prod_{i=0}^{31} V_i^{2^i} = g^b \cdot h^r\\)
-
-## Next Steps
-
-- [Range Proofs](range.md) - Composition of bit proofs
-- [POE Protocol](poe.md) - Understanding the base protocol
+This protocol is not directly used in Tongo. It is used in an indirect way as part of Range protocol.

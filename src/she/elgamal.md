@@ -1,220 +1,32 @@
-# ElGamal Encryption
+# ElGamal
 
-ElGamal encryption over elliptic curves provides the foundation for Tongo's confidential balances.
+Given a public key \\(y\\), an ElGamal encryption of an amount \\(b\\) with randomness \\(r\\) is a pair of elliptic curve points of the for
 
-## Mathematical Definition
+$$
+(L, R) = \left( g^b y^r,\ g^r\right)
+$$
+where $g$ is the chosen generator. This protocol is used to prove to a verifier that a given ElGamal encryption is exactly of this form. To show this, the prover must prove knowledge of:
+1. \\(r\\) such that \\(R = g^r\\)
+2. \\(b\\) such that \\(L = g^b y^r\\) for the given public key and with the same \\(r\\) as before.
 
-The ElGamal encryption scheme over the Stark curve is defined as:
+Note that the first assertion can be proven with a POE protocol and the second one with a POE2 protocol. We just need to combine the both of them in a single protocol.
 
-$$\text{Enc}[y](b, r) = (L, R) = (g^b \cdot y^r, g^r)$$
+> **Aclaration**: The two generators used in the POE2 procol must satisfy that there is not know discrete log relation between them. Here, the two generators would be \\(g\\) and \\(y\\) whose discrete log relation is the secret key \\(x\\) known by the owner of the public key. A simple POE2 protocol in this setup would be insecure. The extra restriction that the blinding factor \\(r\\) is encoded in the $R$ part of the encryption is enoguh to avoid any posible attack to the POE2 protocol.
 
-Where:
-- \\(g\\) is the Stark curve generator
-- \\(y = g^x\\) is the recipient's public key
-- \\(b\\) is the message (balance amount)
-- \\(r\\) is a random blinding factor
 
-## Properties
+## Protocol (Interactive)
+![caption](../img/elgamal.png)
+The checks the verifier performs are actually a POE check and a POE2 check. This protocol delegates the assertions to the fundamental building blocks POE and POE2.
 
-### Additive Homomorphism
+## Cost Analysis (EC Operations)
 
-Given two ciphertexts encrypting \\(b_1\\) and \\(b_2\\):
+### Prover Complexity
+- 3 EC multiplications
+- 1 EC addition
 
-$$\text{Enc}[y](b_1, r_1) \cdot \text{Enc}[y](b_2, r_2) = \text{Enc}[y](b_1 + b_2, r_1 + r_2)$$
+### Verifier Complexity
+- 5 EC multiplications
+- 3 EC addition
 
-This allows adding encrypted balances without decryption:
-
-$$(L_1, R_1) \cdot (L_2, R_2) = (L_1 \cdot L_2, R_1 \cdot R_2)$$
-
-### Semantic Security
-
-Each encryption uses fresh randomness \\(r\\), ensuring:
-- Same amount encrypted twice produces different ciphertexts
-- Ciphertexts reveal no information about the message
-- Security based on Decisional Diffie-Hellman assumption
-
-## Decryption
-
-To decrypt a ciphertext \\((L, R)\\) with private key \\(x\\):
-
-1. Compute \\(g^b = L / R^x = L / (g^r)^x = (g^b \cdot y^r) / (g^{rx}) = g^b\\)
-2. Solve discrete logarithm: find \\(b\\) such that \\(g^b\\) equals the result
-
-Since \\(b\\) is bounded (e.g., \\([0, 2^{32})\\)), this can be computed efficiently using:
-- Brute force: \\(O(b)\\) time
-- Baby-step Giant-step: \\(O(\sqrt{b})\\) time and space
-
-## Zero-Knowledge Proof
-
-### Statement
-
-Prove that \\((L, R)\\) is a well-formed ElGamal ciphertext:
-
-$$\{(L, R, g, y; b, r) : L = g^b \cdot y^r \land R = g^r\}$$
-
-### Protocol
-
-The proof consists of two coupled sub-proofs:
-
-1. **POE for \\(R\\)**: Prove \\(R = g^r\\) (knowledge of \\(r\\))
-2. **POE2 for \\(L\\)**: Prove \\(L = g^b \cdot y^r\\) (knowledge of \\(b\\) and \\(r\\))
-
-**Prover** (knows \\(b\\), \\(r\\)):
-```
-Choose random kb, kr
-Compute AL = g^kb · y^kr
-Compute AR = g^kr
-Compute challenge c = Hash(prefix, AL, AR)
-Compute sb = kb + c·b
-Compute sr = kr + c·r
-Send: (AL, AR, sb, sr)
-```
-
-**Verifier** (checks):
-```
-Recompute c = Hash(prefix, AL, AR)
-Check: g^sr == AR · R^c          [POE for R]
-Check: g^sb · y^sr == AL · L^c   [POE2 for L]
-```
-
-## Implementation
-
-### Encryption (TypeScript)
-
-```typescript
-import { ProjectivePoint } from "@scure/starknet";
-
-function encrypt(
-  message: bigint,
-  publicKey: ProjectivePoint,
-  generator: ProjectivePoint,
-  randomness: bigint
-): { L: ProjectivePoint; R: ProjectivePoint } {
-  const L = generator.multiply(message).add(publicKey.multiply(randomness));
-  const R = generator.multiply(randomness);
-  return { L, R };
-}
-```
-
-### Decryption (TypeScript)
-
-```typescript
-function decrypt(
-  L: ProjectivePoint,
-  R: ProjectivePoint,
-  secretKey: bigint,
-  maxValue: bigint = 1000000n
-): bigint {
-  // Compute g^b = L / R^x
-  const gb = L.subtract(R.multiply(secretKey));
-  
-  // Brute force discrete log
-  const g = ProjectivePoint.BASE;
-  for (let i = 0n; i <= maxValue; i++) {
-    if (g.multiply(i).equals(gb)) {
-      return i;
-    }
-  }
-  
-  throw new Error('Decryption failed: value not in range');
-}
-```
-
-### Proof Generation (TypeScript)
-
-```typescript
-import * as ElGamal from "@fatsolutions/she/protocols";
-
-function proveElGamal(
-  message: bigint,
-  random: bigint,
-  g: ProjectivePoint,
-  publicKey: ProjectivePoint,
-  prefix: bigint
-): { inputs: ElGamalInputs; proof: ElGamalProof } {
-  return ElGamal.prove(message, random, g, publicKey, prefix);
-}
-```
-
-### Proof Verification (TypeScript)
-
-```typescript
-function verifyElGamal(
-  inputs: ElGamalInputs,
-  proof: ElGamalProofWithPrefix
-): boolean {
-  return ElGamal.verify_with_prefix(inputs, proof);
-}
-```
-
-## Security Analysis
-
-### Soundness
-
-An adversary cannot forge a valid proof without knowing \\(b\\) and \\(r\\) because:
-- POE for \\(R\\) requires knowledge of \\(r\\)
-- POE2 for \\(L\\) requires knowledge of both \\(b\\) and \\(r\\)
-- Challenge binding prevents proof manipulation
-
-### Zero-Knowledge
-
-The proof reveals nothing about \\(b\\) or \\(r\\) beyond the public statement because:
-- Commitments are perfectly hiding
-- Responses are uniformly random mod curve order
-- Simulation is indistinguishable from real proofs
-
-### Completeness
-
-Honest provers always produce valid proofs because:
-- Verification equations hold for correctly computed responses
-- Challenge computation is deterministic
-- All arithmetic is mod curve order
-
-## Cairo Implementation
-
-The Cairo version in `/packages/cairo/src/protocols/ElGamal.cairo` provides on-chain verification:
-
-```cairo
-// Simplified Cairo verification
-fn verify_elgamal(
-    L: EcPoint,
-    R: EcPoint,
-    g: EcPoint,
-    y: EcPoint,
-    AL: EcPoint,
-    AR: EcPoint,
-    c: felt252,
-    sb: felt252,
-    sr: felt252
-) -> bool {
-    // Verify R = g^r (POE)
-    let lhs_r = ec_mul(g, sr);
-    let rhs_r = ec_add(AR, ec_mul(R, c));
-    assert(lhs_r == rhs_r);
-    
-    // Verify L = g^b · y^r (POE2)
-    let lhs_l = ec_add(ec_mul(g, sb), ec_mul(y, sr));
-    let rhs_l = ec_add(AL, ec_mul(L, c));
-    assert(lhs_l == rhs_l);
-    
-    true
-}
-```
-
-## Cost Analysis
-
-### TypeScript (Off-Chain)
-- **Proof Generation**: ~10-15ms
-- **Proof Verification**: ~1-2ms
-- **2 EC multiplications + 1 EC addition**
-
-### Cairo (On-Chain)
-- **Verification**: ~5,000 Cairo steps
-- **2 `ec_mul` operations**
-- **2 `ec_add` operations**
-
-## Next Steps
-
-- [Understand POE Protocol](poe.md)
-- [Learn about Range Proofs](range.md)
-- [Explore Same Encryption proofs](same-encryption.md)
+## Usage in Tongo
+All encryptions given by the user in Tongo pass through ElGamal protocol. Most of them are invoked by another SHE protocol that shows that two given encryptions are valid and they are indeed encrypting the same amount. 
