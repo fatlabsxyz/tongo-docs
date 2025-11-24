@@ -41,14 +41,3 @@ Tongo supports five core operations, we describe them in the following sections:
 4. **[Rollover](rollover.md)** - Claim pending incoming transfers
 3. **[Withdraw](withdraw.md)** - Convert encrypted balance back to ERC20
 5. **[Ragequit](ragequit.md)** - Emergency withdrawal of entire balance
-
-
-
-<!-- | Operation | Cairo Steps | Relative Cost |
-<!-- |-----------|-------------|---------------|
-<!-- | Fund      | ~50K        | Low           |
-<!-- | Transfer  | ~120K       | Medium        |
-<!-- | Rollover  | ~80K        | Low           |
-<!-- | Withdraw  | ~80K        | Low           |
-<!-- | Ragequit  | ~80K        | Low           |
-<!-- 
