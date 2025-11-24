@@ -1,197 +1,67 @@
 # Same Encryption Proof
 
-Proves that two ciphertexts for different public keys encrypt the same value.
+Given two ElGamal encryptions of an amount \\(b\\) for two (possibly different) public keys \\(y_1\\) and \\(y_2\\), this protocol is used to convince a verifier that both encryptions are valid ElGamal encryptions under their respective public key and that both of them encrypt the same amount. In this proof, the prover is assumed to know the randomness of both encryptions and, of course, the amount \\(b\\).
 
-## Statement
+The encryptios are
+$$
+(L1, R1) = \left( g^b y_1^{r_1},\ g^{r_1}\right)\\\\
+(L2, R2) = \left( g^b y_2^{r_2},\ g^{r_2}\right)
+$$
+The prover must show that:
+1. \\((L1, R1)\\) is a valid encryption under \\(y_2\\) for and amount \\(b\\)
+2. \\((L2, R2)\\) is a valid encryption under \\(y_2\\) for the same amount \\(b\\) 
 
-Prove that \\((L_1, R_1)\\) and \\((L_2, R_2)\\) encrypt the same message \\(b\\) for different keys \\(y_1\\) and \\(y_2\\):
+Note that the both assertion can be proven with ElGamal protocol. We just have to combine them in a way that the share the same secret value \\(b\\) 
+ 
+## Protocol (Interactive)
+![caption](../img/sameencrypt.png)
+The checks the verifier performs are actually two ElGamal protocol checks. This protocol just delegates these assertions.
 
-$$\{(L_1, R_1, L_2, R_2, g, y_1, y_2; b, r_1, r_2) : L_1 = g^b \cdot y_1^{r_1} \land R_1 = g^{r_1} \land L_2 = g^b \cdot y_2^{r_2} \land R_2 = g^{r_2}\}$$
 
-## Use Case
+## Cost Analysis (EC Operations)
+### Prover Complexity
+- 6 EC multiplications
+- 2 EC addition
 
-This proof is critical for Tongo transfers where the same amount must be:
-- Encrypted for the sender (to subtract from balance)
-- Encrypted for the receiver (to add to pending)
-- Encrypted for the auditor (for compliance)
-
-All three must encrypt the same \\(b\\) but use different randomness for each public key.
-
-## Protocol
-
-**Prover** (knows \\(b\\), \\(r_1\\), \\(r_2\\)):
-
-```
-Choose random kb, kr1, kr2
-Compute AL1 = g^kb · y1^kr1
-Compute AR1 = g^kr1
-Compute AL2 = g^kb · y2^kr2
-Compute AR2 = g^kr2
-Compute c = Hash(prefix, AL1, AR1, AL2, AR2)
-Compute sb = kb + c·b
-Compute sr1 = kr1 + c·r1
-Compute sr2 = kr2 + c·r2
-Send: (AL1, AR1, AL2, AR2, sb, sr1, sr2)
-```
-
-**Verifier**:
-```
-Recompute c = Hash(prefix, AL1, AR1, AL2, AR2)
-Check ElGamal proof 1: g^sb · y1^sr1 == AL1 · L1^c AND g^sr1 == AR1 · R1^c
-Check ElGamal proof 2: g^sb · y2^sr2 == AL2 · L2^c AND g^sr2 == AR2 · R2^c
-```
-
-## Key Insight
-
-Both proofs use the **same \\(s_b\\)** response! This proves:
-- Both ciphertexts use the same message \\(b\\)
-- Without revealing \\(b\\)
-- While using independent randomness \\(r_1 \neq r_2\\)
-
-## Implementation
-
-### TypeScript
-
-```typescript
-interface SameEncryptionInputs {
-  L1: ProjectivePoint;
-  R1: ProjectivePoint;
-  L2: ProjectivePoint;
-  R2: ProjectivePoint;
-  g: ProjectivePoint;
-  y1: ProjectivePoint;
-  y2: ProjectivePoint;
-}
-
-interface SameEncryptionProofWithPrefix {
-  AL1: ProjectivePoint;
-  AR1: ProjectivePoint;
-  AL2: ProjectivePoint;
-  AR2: ProjectivePoint;
-  prefix: bigint;
-  sb: bigint;
-  sr1: bigint;
-  sr2: bigint;
-}
-
-function proveSameEncryption(
-  g: ProjectivePoint,
-  y1: ProjectivePoint,
-  y2: ProjectivePoint,
-  message: bigint,
-  random1: bigint,
-  random2: bigint,
-  prefix: bigint
-): { inputs: SameEncryptionInputs; proof: SameEncryptionProofWithPrefix } {
-  // Create ciphertexts
-  const L1 = g.multiply(message).add(y1.multiply(random1));
-  const R1 = g.multiply(random1);
-  const L2 = g.multiply(message).add(y2.multiply(random2));
-  const R2 = g.multiply(random2);
-  
-  // Generate random values for commitments
-  const kb = generateRandom();
-  const kr1 = generateRandom();
-  const kr2 = generateRandom();
-  
-  // Compute commitments
-  const AL1 = g.multiply(kb).add(y1.multiply(kr1));
-  const AR1 = g.multiply(kr1);
-  const AL2 = g.multiply(kb).add(y2.multiply(kr2));
-  const AR2 = g.multiply(kr2);
-  
-  // Compute challenge
-  const c = compute_challenge(prefix, [AL1, AR1, AL2, AR2]);
-  
-  // Compute responses (note: shared sb!)
-  const sb = compute_s(kb, message, c);
-  const sr1 = compute_s(kr1, random1, c);
-  const sr2 = compute_s(kr2, random2, c);
-  
-  return {
-    inputs: { L1, R1, L2, R2, g, y1, y2 },
-    proof: { AL1, AR1, AL2, AR2, prefix, sb, sr1, sr2 }
-  };
-}
-```
-
-### Verification
-
-```typescript
-function verifySameEncryption(
-  inputs: SameEncryptionInputs,
-  proof: SameEncryptionProofWithPrefix
-): boolean {
-  const { L1, R1, L2, R2, g, y1, y2 } = inputs;
-  const { AL1, AR1, AL2, AR2, prefix, sb, sr1, sr2 } = proof;
-  
-  const c = compute_challenge(prefix, [AL1, AR1, AL2, AR2]);
-  
-  // Verify first ElGamal proof
-  if (!verifyElGamal(L1, R1, g, y1, AL1, AR1, c, sb, sr1)) {
-    return false;
-  }
-  
-  // Verify second ElGamal proof
-  if (!verifyElGamal(L2, R2, g, y2, AL2, AR2, c, sb, sr2)) {
-    return false;
-  }
-  
-  return true;
-}
-```
-
-## Security Analysis
-
-### Soundness
-
-Adversary cannot forge proof without knowing \\(b\\) because:
-- Requires valid ElGamal proofs for both ciphertexts
-- Shared \\(s_b\\) forces same message value
-- Challenge binding prevents manipulation
-
-### Zero-Knowledge
-
-Proof reveals nothing about \\(b\\) or randomness because:
-- Commitments are perfectly hiding
-- Responses are uniformly random
-- Can be simulated without witness
-
-## Cost Analysis
-
-### Prover
-- 2 ElGamal proof generations
-- Time: ~20-30ms
-
-### Verifier
-- 2 ElGamal proof verifications
+### Verifier Complexity
 - 10 EC multiplications
-- 6 EC additions
-- Time: ~3-4ms
-
-### Cairo
-- ~10,000 Cairo steps
-
-## Variants
-
-### Same Encryption Unknown Random
-
-Proves same encryption when randomness is not known to prover.
-
-**Use Case**: Ex-post proofs where original randomness was lost.
-
-See `sameEncryptionUnknownRandom.ts` for implementation.
+- 6 EC addition
 
 ## Usage in Tongo
+In a trnasfer operation in Tongo,  the sender must provide two encryption of the same amount, one is to be added to the pending balance of the receiver and the other one to be subracted from the sender's balance. The sender uses this protocol to show the validity of those encryptions.
 
-Same Encryption proofs are used in:
 
-1. **Transfers**: Prove amount encrypted for sender, receiver, and auditor is identical
-2. **Auditing**: Prove audit ciphertext matches transfer amount
-3. **Viewing Keys**: Prove additional encryptions match transfer amount
+# Variation: Unknown Random
+This variation of the previous protocol allows the prover to ignore the randomness of one of the encryptions. The price to pay is that the prover must know the secret  \\(x\\) of the public key \\(y= g^x\\) the encryptions is made for. This works because the \\(L\\) point in a valid ElGamal encryption can be seen as a commitment to \\(b\\) and \\(x\\) with generators \\(g\\) and \\(R\\), that is
 
-## Next Steps
+$$
+(L, R) = \left( g^b y^{r},\ g^{r}\right) = \left( g^b R^{x},\ R\right) 
+$$
+In the RHS of the previous equation, the randomness is unknown. We can prove that this is a correct encryption with a POE2 protocol for the \\(L\\) part of the encryption
 
-- [ElGamal Encryption](elgamal.md) - Understanding the base encryption
-- [Bit Proofs](bit.md) - Range proof building blocks
-- [POE Protocol](poe.md) - Base proof system
+> **Aclaration**: The two generators used in the POE2 procol must satisfy that there is not know discrete log relation between them. Here, the two generators would be \\(g\\) and \\(R\\) whose discrete log relation is the randomness \\(r\\) that might be known by the constructor of the original encryption. A simple POE2 protocol in this setup would be insecure. The extra restriction that the secret \\(x\\) is exactly the secret of the public key \\(y\\) is enoguh to avoid any posible attack to the POE2 protocol.
+
+We have in this setup two encryptions
+$$
+(L1, R1) = \left( g^b R1^{x},\ R1\right) \\\\
+(L2, R2) = \left( g^b y_2^{r_2},\ g^{r_2}\right)
+$$
+
+The prover must show that:
+1. Knowledge of \\(x\\) such that \\(y = g^x\\) 
+2. Knowledge \\(b\\) such that \\(L1 = g^b R1^x\\) for the given \\(R1\\)  key and with the same \\(x\\) as before.
+3. \\((L2, R2)\\) is a valid encryption under \\(y_2\\) for the same amount \\(b\\) 
+
+> **Design choice** There is a way to reuse the original SameEncrypt protocol to prove this. The way of do it requires swapping  \\(r_1 \leftrightarrow x\\) and \\(R1 \leftrightarrow y_1\\). We think that making these changes to call provers/verifiers would be very confusing and error prone. So we have decided to write a separate protocol to handle this case.
+
+## Protocol (Interactive)
+![caption](../img/unknownrandom.png)
+
+### Verifier Complexity
+- 10 EC multiplications
+- 6 EC addition
+
+## Usage in Tongo
+In transfers/withdraw operations in Tongo, user must show that the remaining balance, after the operation, is positive. Zero-Knowledge proof in these cases are to be checked against the current balance of the account. Users generaly dont know the randomness of the encryption of the current balance:  is the sum of all randomness generated by the senders, of previous incoming transfers that had them as receiver. 
+
+To prove that the remaining balance is positive, the Zero-Knowledge proof consists in the creation of an auxiliar encryption, for this encryption a Range protocol shows that is encrypting a positive balance, and then the prover shows that this auxiliar encryption and the current balance of the account are the same. For this last step, the `UnknownRandom` version of the `SameEncrypt` protocol is used

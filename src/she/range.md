@@ -1,182 +1,42 @@
 # Range Proofs
-
-Range proofs demonstrate that a value lies within a specific range using bit decomposition.
-
-## Statement
-
-Prove that a value \\(b\\) satisfies \\(b \in [0, 2^n)\\) where \\(n\\) is the bit length:
-
-$$\{(V, g, h; b, r) : V = g^b \cdot h^r \land b \in [0, 2^n)\}$$
-
-## Binary Decomposition
-
-Any value \\(b < 2^n\\) can be written as:
-
-$$b = \sum_{i=0}^{n-1} b_i \cdot 2^i$$
-
-Where each \\(b_i \in \{0, 1\}\\).
+This protocol allows a prover to convince a verifier that a commited value \\(b\\) belongs to a range \\([0, 2^n)\\). The protocol does this by ussing the binary decomposition of \\(b\\). We call  `bit_size` to the integer \\(n\\). The commitment is of the form
+$$
+V = g^b h^r
+$$
+where \\(g\\) and \\(h\\) are two generator points with discrete log relation unknown, \\(b\\) is the number we want to show belongs to the range  \\([0, 2^n)\\) and \\(r\\) is a blinding factor.
 
 ## Protocol
 
-### 1. Bit Commitments
+Any value \\(b \in [0, 2^n)\\) can be written as:
 
-For each bit \\(b_i\\), create a commitment with independent randomness \\(r_i\\):
+$$b = \sum_{i=0}^{n-1} b_i \cdot 2^i$$
+
+Where each \\(b_i \in \{0, 1\}\\). For each bit \\(b_i\\), the prover creates a commitment with independent randomness \\(r_i\\) of the form 
 
 $$V_i = g^{b_i} \cdot h^{r_i}$$
 
-### 2. Bit Proofs
+for each one of this commitments, the prover uses a [Bit](bit.md) protocol  to show that \\(V_i\\) is encoding either zero or one. Note that we can construct a commitment \\(V\\) with the commitments \\(V_i\\) by computing
+$$
+V = \prod_{i=0}^{n-1} V_i^{2^i} = g^b h^{r_{total}}
+$$
+where \\(r_{total} = \sum_{i=0}^{n-1} r_i 2^i\\). A verifier that constructs this \\(V\\) after all commitments \\(V_i\\) verify the [Bit](bit/md) protocol will be convinced that $V$ is a comitment to a value \\(b \in [0, 2^n)\\). This commitment $V$ can now be used as part of other protocols depending on what the prover wants to show.
 
-Generate a bit proof for each \\(V_i\\) showing \\(b_i \in \{0, 1\}\\).
 
-### 3. Consistency Check
+## Cost Analysis (EC Operations)
 
-The verifier computes:
+### Prover Complexity
+- 3n EC multiplications
+- n EC addition
 
-$$V_{\text{total}} = \prod_{i=0}^{n-1} V_i^{2^i} = \prod_{i=0}^{n-1} (g^{b_i} \cdot h^{r_i})^{2^i}$$
+### Verifier Complexity
+- 5n EC multiplications
+- 4n EC addition
 
-$$= g^{\sum_{i=0}^{n-1} b_i \cdot 2^i} \cdot h^{\sum_{i=0}^{n-1} r_i \cdot 2^i} = g^b \cdot h^r$$
-
-If all bit proofs verify and \\(V_{\text{total}} = V\\), then \\(b \in [0, 2^n)\\).
-
-## Implementation
-
-### TypeScript
-
-```typescript
-interface RangeInputs {
-  g: ProjectivePoint;
-  h: ProjectivePoint;
-  bit_size: number;
-  commitments: ProjectivePoint[];  // V_0, V_1, ..., V_{n-1}
-}
-
-interface RangeProof {
-  proofs: BitProofWithPrefix[];  // One bit proof per commitment
-}
-
-function proveRange(
-  b: bigint,
-  bit_size: number,
-  g: ProjectivePoint,
-  h: ProjectivePoint,
-  prefix: bigint
-): { inputs: RangeInputs; proof: RangeProof; r: bigint } {
-  // Convert to binary
-  const bits = b
-    .toString(2)
-    .padStart(bit_size, '0')
-    .split('')
-    .map(Number)
-    .reverse();  // Little-endian
-  
-  const commitments: ProjectivePoint[] = [];
-  const bitProofs: BitProofWithPrefix[] = [];
-  let r = 0n;
-  
-  // Generate bit commitments and proofs
-  for (let i = 0; i < bit_size; i++) {
-    const r_i = generateRandom();
-    const { inputs, proof } = proveBit(
-      bits[i] as (0 | 1),
-      r_i,
-      g,
-      h,
-      prefix + BigInt(i)
-    );
-    
-    commitments.push(inputs.V);
-    bitProofs.push(proof);
-    r = (r + r_i * (2n ** BigInt(i))) % CURVE_ORDER;
-  }
-  
-  return {
-    inputs: { g, h, bit_size, commitments },
-    proof: { proofs: bitProofs },
-    r
-  };
-}
-```
-
-### Verification
-
-```typescript
-function verifyRange(
-  inputs: RangeInputs,
-  proof: RangeProof
-): ProjectivePoint | false {
-  const { g, h, bit_size, commitments } = inputs;
-  const { proofs } = proof;
-  
-  // Verify each bit proof
-  let V_total = ProjectivePoint.ZERO;
-  for (let i = 0; i < bit_size; i++) {
-    const pow = 2n ** BigInt(i);
-    const V_i = commitments[i];
-    const proof_i = proofs[i];
-    
-    if (!verifyBit({ V: V_i, g, h }, proof_i)) {
-      return false;
-    }
-    
-    V_total = V_total.add(V_i.multiply(pow));
-  }
-  
-  return V_total;  // Should equal g^b · h^r
-}
-```
-
-## Cost Analysis
-
-For n-bit range proof:
-
-### Prover
-- n bit proof generations
-- n random scalars
-- Time: ~n × 20ms (640ms for 32-bit)
-
-### Verifier
-- n bit proof verifications
-- Consistency check
-- Time: ~n × 2ms + 5ms (~70ms for 32-bit)
-
-### Cairo (On-Chain)
-- n bit verifications
-- Weighted commitment sum
-- ~n × 8K + 5K Cairo steps (~260K for 32-bit)
-
-## Optimizations
-
-### Precomputed Tables
-
-Cache generator multiples:
-
-```typescript
-const gTable = g.precomputeWindow(8);
-const hTable = h.precomputeWindow(8);
-```
-
-### Batch Verification
-
-Verify multiple range proofs together when possible.
-
-### Smaller Ranges
-
-Use smaller bit sizes when possible:
-- 16-bit: ~160ms proving, ~35ms verification
-- 24-bit: ~480ms proving, ~50ms verification
-- 32-bit: ~640ms proving, ~70ms verification
 
 ## Usage in Tongo
 
-Range proofs are used to ensure:
-
-1. **Transfer amounts**: \\(b \in [0, 2^{32})\\)
-2. **Remaining balances**: \\(b_{\text{after}} = b_{\text{before}} - b_{\text{transfer}} \in [0, 2^{32})\\)
-3. **Withdrawal amounts**: \\(b \in [0, 2^{32})\\)
-4. **No negative balances**: Prevents underflow attacks
-
-## Next Steps
-
-- [Bit Proofs](bit.md) - Understanding the building blocks
-- [POE Protocol](poe.md) - Base proof system
-- [ElGamal Encryption](elgamal.md) - Complete encryption system
+In a transfer operation in Tongo, the sender must show that the sended amount is positive and the remaining balance is positive. To prove anyone of this, the prover submits a Range proof, then the reconstructed commitment \\(V\\) is used as the \\(L\\)  part of a ElGamal encryption
+$$
+    (L, R) = (V, g^{r_{total}})
+$$
+this is a valid encryption for the publick key \\(h\\). The sender then uses the [SameEncrypt](same-encryption.md) protocol to shows that it encrypts the same amount as the encryption created for a transfer (showing then that the transfered balance is positive), or the `UnknownRandom` version to show that it encrypts the same amount of the remaining balance (showing then that the remainign balance is positive)

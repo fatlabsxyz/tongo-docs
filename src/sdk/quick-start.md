@@ -1,41 +1,28 @@
 # Quick Start
 
-This guide will walk you through your first Tongo confidential transfer in just a few minutes.
+## Installation
 
-## Prerequisites
-
-- Node.js v18+ installed
-- A Starknet account with some testnet ETH (for gas fees)
-- Basic familiarity with TypeScript and Starknet
-
-## Setup
-
-Install the required packages:
+### Using npm
+To use the SDK you need to install it together with a starknet.js version superior to `v8`.
 
 ```bash
-npm install @fatsolutions/tongo-sdk starknet
+npm install @fatsolutions/tongo-sdk
+npm install starknet@8.x.x
 ```
 
-## Basic Workflow
 
-A typical Tongo workflow involves four steps:
+## Basic Concepts
 
-1. **Fund** - Convert ERC20 tokens to encrypted balance
-2. **Transfer** - Send confidential transfers
-3. **Rollover** - Claim pending incoming transfers
-4. **Withdraw** - Convert back to ERC20 tokens
+### **Starknet Account Class**
 
-## Complete Example
-
-### Step 1: Setup Provider and Signer
+This is the starknet account that will pay the transanction costs of the tx you send to starknet. To set it up the first step is to set a provider and then initializathe an `Account` class from the starknet library
 
 ```typescript
-import { Account as TongoAccount } from "@fatsolutions/tongo-sdk";
 import { Account, RpcProvider } from "starknet";
 
-// Setup Starknet provider (Sepolia testnet)
+// Setup Starknet provider 
 const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_8/YOUR_API_KEY",
+    nodeUrl: "YOUR_RPC_PROVIDER",
     specVersion: "0.8.1",
 });
 
@@ -43,152 +30,38 @@ const provider = new RpcProvider({
 const signer = new Account({
     provider,
     address: "YOUR_STARKNET_ADDRESS",
-    signer: "YOUR_PRIVATE_KEY"
+    signer: "YOUR_STARKNET_PRIVATE_KEY"
 });
-
-// Tongo contract address on Sepolia
-// This contract wraps STRK with a 1:1 rate (1 STRK = 1 Tongo STRK)
-const tongoAddress = "0x00b4cca30f0f641e01140c1c388f55641f1c3fe5515484e622b6cb91d8cee585";
 ```
+At this step, the signer can execute a well constructed `call` with `signer.execute(call)`. You can read more about how to interact with a starknet contract in the [starknet.js documentation](https://starknetjs.com/)
 
-> **Important**: Your Starknet account must have:
-> - Testnet ETH for gas fees
-> - STRK tokens (this contract wraps STRK on Sepolia testnet)
-> - Get testnet STRK from: https://starknet-faucet.vercel.app/
-
-### Step 2: Create Tongo Accounts
+### **Tongo Account Class** 
+This class represents a user's Tongo Account. The main feature is that it can construct the payloads for different Tongo operations (Fund/Transfer/Rollover/Withdraw/Ragequit). To create an instance to a Tongo account class you need the private key of the account, the Tongo address to interact with and a rpc provider.
 
 ```typescript
-// Create two Tongo accounts with different private keys
-const account1PrivateKey = 82130983n; // Your Tongo private key
-const account2PrivateKey = 12930923n; // Recipient's Tongo private key
+import { Account as TongoAccount } from "@fatsolutions/tongo-sdk";
 
-const account1 = new TongoAccount(account1PrivateKey, tongoAddress, provider);
-const account2 = new TongoAccount(account2PrivateKey, tongoAddress, provider);
+const tongoAddress = "TONGO_CONTRACT_ADDRESS";
 
-console.log("Account 1 Public Key:", account1.publicKey);
-console.log("Account 2 Public Key:", account2.publicKey);
+const privateKey = "USER_TONGO_PRIVATE_KEY";
+
+const tongoAccount = new TongoAccount(
+    privateKey,
+    tongoAddress,
+    provider
+);
+
+console.log("Your Tongo public key is:", tongoAcount.publicKey);
 ```
+You can read more about the Tongo Account Class [here](accounts.md)
 
-> **Note**: Tongo private keys are separate from Starknet private keys. See [Key Management](concepts/key-management.md) for details.
-
-### Step 3: Fund Account 1
+### **Basic Interactions: Operations**
+Whit a Tongo Account and a Starkenet Account set up, you can start to create and execute Tongo Operations (Fund/Transfer/Rollover/Withdraw/Ragequit). You can read more about Operations and the way of creating them [here](operations/operations.md). To execute an operation need to create the call with the Tongo Account class and the execute it with the Starknet Account class.
 
 ```typescript
-// Fund account 1 with 100 Tongo units
-// Note: Tongo uses 32-bit balances, amounts are in Tongo units (not full STRK decimals)
-const fundOp = await account1.fund({ amount: 100n });
+const operation = tongoAccount.someOperation({...params});
 
-// Populate the ERC20 approval transaction
-await fundOp.populateApprove();
+const call = operation.toCalldata();
 
-// Execute both approval and fund transactions
-const fundTx = await signer.execute([
-    fundOp.approve!,  // Approve Tongo contract to spend tokens
-    fundOp.toCalldata()  // Fund operation
-]);
-
-console.log("Fund transaction:", fundTx.transaction_hash);
-
-// Wait for transaction confirmation
-await provider.waitForTransaction(fundTx.transaction_hash);
+signer.execute(call)
 ```
-
-### Step 4: Check Balance
-
-```typescript
-// Get encrypted state
-const state1 = await account1.rawState();
-
-// Decrypt balance
-const balance = account1.decryptCipherBalance(state1.balance);
-console.log("Account 1 balance:", balance); // 100n
-
-// Or use the convenience method
-const decryptedState = await account1.state();
-console.log("Decrypted state:", decryptedState);
-// { balance: 100n, pending: 0n, nonce: 1n }
-```
-
-### Step 5: Transfer to Account 2
-
-```typescript
-// Transfer 25 Tongo units from account 1 to account 2
-const transferOp = await account1.transfer({
-    to: account2.publicKey,
-    amount: 25n
-});
-
-const transferTx = await signer.execute(transferOp.toCalldata());
-console.log("Transfer transaction:", transferTx.transaction_hash);
-
-await provider.waitForTransaction(transferTx.transaction_hash);
-```
-
-### Step 6: Check Account States
-
-```typescript
-// Check sender balance (should be reduced)
-const state1After = await account1.state();
-console.log("Account 1 after transfer:", state1After);
-// { balance: 75n, pending: 0n, nonce: 2n }
-
-// Check recipient pending balance (not yet rolled over)
-const state2 = await account2.state();
-console.log("Account 2 state:", state2);
-// { balance: 0n, pending: 25n, nonce: 0n }
-```
-
-### Step 7: Rollover (Claim Transfer)
-
-```typescript
-// Account 2 must rollover to claim the pending transfer
-const rolloverOp = await account2.rollover();
-
-const rolloverTx = await signer.execute(rolloverOp.toCalldata());
-console.log("Rollover transaction:", rolloverTx.transaction_hash);
-
-await provider.waitForTransaction(rolloverTx.transaction_hash);
-
-// Check account 2 balance again
-const state2After = await account2.state();
-console.log("Account 2 after rollover:", state2After);
-// { balance: 25n, pending: 0n, nonce: 1n }
-```
-
-### Step 8: Withdraw
-
-```typescript
-// Withdraw 10 Tongo units back to ERC20
-const withdrawOp = await account2.withdraw({
-    to: signer.address,  // Withdraw to your Starknet address
-    amount: 10n
-});
-
-const withdrawTx = await signer.execute(withdrawOp.toCalldata());
-console.log("Withdraw transaction:", withdrawTx.transaction_hash);
-
-await provider.waitForTransaction(withdrawTx.transaction_hash);
-
-// Final balance check
-const state2Final = await account2.state();
-console.log("Account 2 final state:", state2Final);
-// { balance: 15n, pending: 0n, nonce: 2n }
-```
-
-## Key Concepts
-
-- **Tongo Account**: A separate keypair for confidential transactions (different from Starknet account)
-- **Encrypted Balance**: Your balance is stored encrypted on-chain
-- **Pending Balance**: Incoming transfers must be "rolled over" to be spendable
-- **Nonce**: Each account has a nonce that increments with each operation
-- **Tongo Units**: Amounts are in Tongo units (32-bit integers, max value: 2^32 - 1)
-- **1:1 Rate**: This Tongo contract uses a 1:1 conversion rate with STRK
-- **Not Full Decimals**: Due to 32-bit limit, use integer amounts like 100n, not 10^18 for 1 STRK
-
-## Next Steps
-
-- [Learn about Accounts](concepts/accounts.md)
-- [Understand Operations](concepts/operations.md)
-- [See complete examples](examples/complete-workflow.md)
-- [Integrate with wallets](guides/wallet-integration.md)
