@@ -2,6 +2,7 @@
 book/
 *.html
 *.json
+!vercel.json
 
 # Backup files
 *.bak
