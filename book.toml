@@ -11,8 +11,8 @@ build-dir = "book"
 [output.html]
 default-theme = "navy"
 preferred-dark-theme = "navy"
-git-repository-url = "https://github.com/fatlabsxyz/tongo"
-edit-url-template = "https://github.com/fatlabsxyz/tongo/edit/master/packages/tongo-sdk/docs/{path}"
+git-repository-url = "https://github.com/fatlabsxyz/tongo-docs"
+edit-url-template = "https://github.com/fatlabsxyz/tongo-docs/edit/master/{path}"
 additional-css = ["theme/custom.css"]
 additional-js = ["theme/footer.js"]
 mathjax-support = true

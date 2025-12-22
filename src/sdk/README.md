@@ -34,7 +34,7 @@ High-level application interface providing:
 - **Package**: `@fatsolutions/tongo-sdk`
 - **Current Version**: 1.2.0
 - **License**: Apache-2.0
-- **Repository**: [github.com/fatlabsxyz/tongo](https://github.com/fatlabsxyz/tongo)
+- **Repository**: [github.com/fatlabsxyz/tongo-docs](https://github.com/fatlabsxyz/tongo-docs)
 
 ## Quick Links
 

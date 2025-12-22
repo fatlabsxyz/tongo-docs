@@ -6,7 +6,7 @@ Tongo is a **confidential payment system** for ERC20 tokens on Starknet, providi
 
 ### No Trusted Setup
 
-Unlike many ZK systems (Zcash, Tornado Cash), Tongo requires **no trusted ceremony**. All cryptography is built on the discrete logarithm assumption over the Stark curve, with no hidden trapdoors or setup parameters.
+Unlike many ZK systems, Tongo requires **no trusted ceremony**. All cryptography is built on the discrete logarithm assumption over the Stark curve, with no hidden trapdoors or setup parameters.
 
 ### Native Starknet Integration
 

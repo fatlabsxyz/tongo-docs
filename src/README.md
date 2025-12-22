@@ -32,7 +32,7 @@ Get started building with the Tongo TypeScript SDK:
 
 ## Quick Links
 
-- **GitHub**: [github.com/fatlabsxyz/tongo](https://github.com/fatlabsxyz/tongo)
+- **GitHub**: [github.com/fatlabsxyz/tongo-docs](https://github.com/fatlabsxyz/tongo-docs)
 - **npm Package**: [@fatsolutions/tongo-sdk](https://www.npmjs.com/package/@fatsolutions/tongo-sdk)
 - **Website**: [tongo.cash](https://tongo.cash)
 
