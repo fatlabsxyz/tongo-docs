@@ -140,7 +140,7 @@ $$(L_p, R_p) \cdot (L_r, R_r) = (L_p \cdot L_r, R_p \cdot R_r)$$
 
 Transfers are added to the receiver's `pending` balance rather than their main balance to prevent spam attacks. This design:
 
-1. **Prevents balance corruption**: Malicious actors can't modify someone's main balance
+1. **Prevents Spam Halting the Account**: Even if malicious actors spam the account, users can utilize their balance
 2. **Enables atomic proofs**: Senders prove against a known balance state
 3. **Requires explicit rollover**: Receivers must claim pending transfers
 
