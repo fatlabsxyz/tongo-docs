@@ -80,7 +80,6 @@ The symmetric encryption uses a key derived from the user's private key, allowin
 
 - **Balance confidentiality**: Only the key holder can decrypt
 - **Transaction privacy**: Transfer amounts remain hidden
-- **Unlinkability**: Encrypted balances don't reveal relationships
 
 ## Example: Fund Operation
 

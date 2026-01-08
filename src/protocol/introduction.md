@@ -92,7 +92,6 @@ await signer.execute([withdrawOp.toCalldata()]);
 
 - **Balance confidentiality**: Only key holders (account owners and auditors) can decrypt balances
 - **Transaction privacy**: Transfer amounts are hidden from public view
-- **Unlinkability**: Transactions don't reveal sender-receiver relationships
 
 ### Integrity Guarantees
 
@@ -104,22 +103,19 @@ await signer.execute([withdrawOp.toCalldata()]);
 
 ### Individual Privacy
 
-- **Personal transactions**: Hide payment amounts from public view
+- **Personal transactions**: Hide transfer amounts from public view
 - **Salary payments**: Confidential payroll systems
-- **Merchant payments**: Private commercial transactions
 
-### Institutional Compliance
+### Compliance
 
-- **Regulated environments**: Auditor oversight with user privacy
-- **Cross-border payments**: Compliance with multiple jurisdictions
-- **Corporate treasury**: Internal transfers with audit trails
+- **Optional Compliance for Institutions**: Deployer can chose weather to deploy with or without auditor keys
+- **Treasury Management**: Confidential transfers with auditability for stakeholders
 
-### DeFi Integration
+### Potential Integrations
 
 - **Private AMM trading**: Hidden trade sizes
-- **Confidential lending**: Private collateral amounts
-- **DAO treasuries**: Private governance token distributions
-
+- **Neo-Bank Confidential Payments**: By design tongo can support payment procesors required speeds
+- **DAO governance**: Confidential voting systems
 ## Getting Started
 
 To start building with Tongo, proceed to the [SDK Documentation](../sdk/README.md) for installation and usage guides.
