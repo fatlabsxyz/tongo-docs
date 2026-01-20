@@ -1,6 +1,6 @@
 # Introduction to Tongo
 
-Tongo is a **confidential payment system** for ERC20 tokens on Starknet, providing privacy-preserving transactions while maintaining auditability and compliance features. Built on ElGamal encryption and zero-knowledge proofs, Tongo enables users to transact with hidden amounts while preserving the ability to verify transaction validity.
+Tongo is a **confidential payment system** for ERC20 tokens on Starknet, providing privacy-preserving transactions while maintaining auditability and compliance features. Built on ElGamal encryption and zero-knowledge proofs, Tongo enables users to transact with hidden amounts while preserving the ability to verify transaction validity. Tongo is heavily based in [this paper](https://eprint.iacr.org/2019/191).
 
 ## What Makes Tongo Different
 
@@ -32,72 +32,66 @@ Balances are stored as ElGamal ciphertexts:
 
 $$\text{Enc}[y](b, r) = (g^b y^r, g^r)$$
 
-The encryption is **additively homomorphic**, allowing balance updates without decryption.
+The encryption is **additively homomorphic**, allowing on-chain balance updates without decryption. Each Tongo account has two balances: the current balance and the pending balance.
 
-### 3. Zero-Knowledge Proofs
+The current balance stores the amount of Tongos the account can use to perform Transfers/Withdraw operations. Zero-Knowledge proofs are check againts this balance and only the owner of the Tongo account can modify this balance thought Fund/Rollover operations.
 
-All operations require proofs built from three primitives:
+The pending balance stores the amount of Tongos that the account has received through Transfer operations. To use this balance the account has to transform the pending balance in current balance. This is done by a Rollover operation. 
 
-- **POE (Proof of Exponent)**: Prove knowledge of discrete logs
-- **PED (Pedersen)**: Prove commitment correctness
-- **RAN (Range)**: Prove values are in valid ranges
-
-### 4. Transaction Flow
-
-**Fund** → **Transfer** → **Rollover** → **Withdraw**
-
-1. **Fund**: Convert ERC20 to encrypted balance
-2. **Transfer**: Send hidden amounts with ZK proofs
-3. **Rollover**: Claim pending incoming transfers
-4. **Withdraw**: Convert back to standard ERC20
 
 ## Core Operations
 
-### Funding
+Tongo has four user operation needed to operate a Tongo account. All these operations requires some kind of Zero-Knowledge proof to be validated by te contract. The operations are: 
+
+### **Funding**
 
 Convert standard ERC20 tokens to encrypted balances:
+In this operation some amount of ERC20 are send to the Tongo contract. The contract the mint for the given Tongo account some amount of tongo based on the ERC20-Tongo rate defined in the same contract. At this stage the amount sent is public, so the contract creates a encryption with a fixed random and adds the newly minted Tongos to the user account.
+This operation can only be performed by the owner of the Tongo account.
 
-```typescript
-const fundOp = await account.fund({ amount: 1000n });
-await signer.execute([fundOp.approve!, fundOp.toCalldata()]);
-```
+### **Transfers**
 
-### Transfers
+Performs confidential transfers between accounts:
+In this operation some amount of Tongos are sent to the given receiver. The sender creates a encryption of the amount for the receiver and a encryption of the same amount for themself. These encryption are added to the receiver and subtracted from the receiver respectively.
+The sender also provides a ZK proof that shows:
+- Ownership of the sender account.
+- Both encrpytion are valid encryptions for the same amount under the correct public keys.
+- The amount encrypted in positive.
+- The sender has enough balance to perform the operation.
 
-Send hidden amounts to other users:
 
-```typescript
-const transferOp = await account.transfer({
-    to: recipientPubKey,
-    amount: 100n,
-});
-await signer.execute([transferOp.toCalldata()]);
-```
+### **Rollover**
 
-### Withdrawals
+In this operation the pending balance is added to the current balance of a given Tongo account and then emptied. 
+
+This operation can only be performed by the owner of the Tongo account.
+
+
+### **Withdrawals**
 
 Convert back to standard ERC20 tokens:
+In this operation some amount of Tongo are converted back to ERC20 and sent to the given starknet account. The whitdrawn amount is public, so the contract creates a encryption of the amount for the user public key and subtract it from the user balance. The user has to provide a ZK proof that shows:
+- Ownership of the Tongo account.
+- The account has enough balance to perform the operation.
 
-```typescript
-const withdrawOp = await account.withdraw({
-    to: starknetAddress,
-    amount: 50n
-});
-await signer.execute([withdrawOp.toCalldata()]);
-```
 
-## Security Model
+## Security Measures
 
-### Privacy Guarantees
+### **No double usage of proofs**
+In Tongo, all operation are validated by a ZK proof. If a ZK proof from a given operation is valid, the operation is performed. For this reason, to preven reusage of previous valid proofs (or some parts of a valid proof) some data is included and signed in each ZK proof. This includes:
+- The chain_id: A valid proof in sepolia is not valid in mainet.
+- The tongo contract address: A valid proof constructer for a particular instance of Tongo is not valid for another one.
+- A user account nonce: ZK proof are construted for a given Tongo account nounce. With each performed operation the Tongo account nonce is increased. So a valid proof will no be valid in the future.
 
-- **Balance confidentiality**: Only key holders (account owners and auditors) can decrypt balances
-- **Transaction privacy**: Transfer amounts are hidden from public view
+### **Whitelisting of Tx sender**
+When constructing the ZK proof the tongo account owner choses the straknet account that will execute the tx. This addres is incorporated and signed in the ZK proof. The contract checks this againts the caller address.  This guarantees that the ZK proof will be valid only if it is executed by the starknet account chosed by the tongo account owner.
 
-### Integrity Guarantees
 
-- **No double spending**: Range proofs prevent negative balances
-- **Conservation**: Total supply is preserved (no money creation)
-- **Authenticity**: Only key owners can spend their balances
+### **Balance Integrity**
+Each time a balance is going to be modified by adding/subtracting an encryption, the encrpytion has to pass a ZK proof that shows:
+- The encryption is a valid ElGamal encryption
+- The amount encrypted is positive
+- The encryption is made for the correct public key
 
 ## Use Cases
 

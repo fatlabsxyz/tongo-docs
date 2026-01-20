@@ -1,296 +1,103 @@
-# Cairo Contracts
+# Tongo Instances
+The class hash of the current version of Tongo is
 
-The Tongo protocol is implemented as a Cairo smart contract on Starknet, leveraging native elliptic curve operations for efficient zero-knowledge proof verification.
+| | |
+|---|---|
+| Tongo Class Hash |[0x00582609087e5aeb75dc25284cf954e2cee6974568d1b5636052a9d36eec672a](https://voyager.online/class/0x00582609087e5aEB75DC25284CF954e2CEE6974568d1B5636052a9d36Eec672a) |
 
-## Contract Architecture
 
-### Core Contract
 
-The main `Tongo` contract implements the `ITongo` interface and manages all confidential payment operations:
+## Mainnet
+We listed here a set of instances of Tongo deployed in mainnet
+| STRK  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 |  [0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d](https://voyager.online/contract/0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d) |
+| Tongo |  [0x3a542d7eb73b3e33a2c54e9827ec17a6365e289ec35ccc94dde97950d9db498](https://voyager.online/contract/0x3a542d7eb73b3e33a2c54e9827ec17a6365e289ec35ccc94dde97950d9db498)  |
+| rate  |  50000000000000000                                                  |
 
-```rust
-#[starknet::interface]
-pub trait ITongo<TContractState> {
-    fn fund(ref self: TContractState, fund: Fund);
-    fn rollover(ref self: TContractState, rollover: Rollover);
-    fn withdraw_all(ref self: TContractState, withdraw_all: WithdrawAll);
-    fn withdraw(ref self: TContractState, withdraw: Withdraw);
-    fn transfer(ref self: TContractState, transfer: Transfer);
+| ETH   |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 |  [0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7](https://voyager.online/contract/0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7) |
+| Tongo |  [0x276e11a5428f6de18a38b7abc1d60abc75ce20aa3a925e20a393fcec9104f89](https://voyager.online/contract/0x276e11a5428f6de18a38b7abc1d60abc75ce20aa3a925e20a393fcec9104f89)  |
+| rate  |  3000000000000                                                      |
 
-    // State queries
-    fn get_balance(self: @TContractState, y: PubKey) -> CipherBalance;
-    fn get_audit(self: @TContractState, y: PubKey) -> CipherBalance;
-    fn get_pending(self: @TContractState, y: PubKey) -> CipherBalance;
-    fn get_nonce(self: @TContractState, y: PubKey) -> u64;
-    fn get_state(self: @TContractState, y: PubKey) -> State;
-    fn ERC20(self: @TContractState) -> ContractAddress;
-}
-```
+| wBTC  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 |  [0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac](https://voyager.online/contract/0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac) |
+| Tongo |  [0x6d82c8c467eac77f880a1d5a090e0e0094a557bf67d74b98ba1881200750e27](https://voyager.online/contract/0x6d82c8c467eac77f880a1d5a090e0e0094a557bf67d74b98ba1881200750e27)  |
+| rate  |  10                                                                 |
 
-### Storage Structure
 
-```rust
-#[storage]
-struct Storage {
-    balance: Map<PubKey, CipherBalance>,        // Main encrypted balances
-    audit_balance: Map<PubKey, CipherBalance>,  // Auditor encrypted copies
-    pending: Map<PubKey, CipherBalance>,        // Incoming transfer buffer
-    ae_balance: Map<PubKey, AEBalance>,        // Fast decrypt hints
-    ae_audit_balance: Map<PubKey, AEBalance>,  // Fast decrypt audit hints
-    nonce: Map<PubKey, u64>,                   // Replay protection
-}
-```
+| USDC.e|                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 |  [0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8](https://voyager.online/contract/0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8) |
+| Tongo |  [0x72098b84989a45cc00697431dfba300f1f5d144ae916e98287418af4e548d96](https://voyager.online/contract/0x72098b84989a45cc00697431dfba300f1f5d144ae916e98287418af4e548d96)  |
+| rate  |  10000                                                              |
 
-### Events
+| USDC  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 |  [0x033068F6539f8e6e6b131e6B2B814e6c34A5224bC66947c47DaB9dFeE93b35fb](https://voyager.online/contract/0x033068F6539f8e6e6b131e6B2B814e6c34A5224bC66947c47DaB9dFeE93b35fb) |
+| Tongo |  [0x026f79017c3c382148832c6ae50c22502e66f7a2f81ccbdb9e1377af31859d3a](https://voyager.online/contract/0x026f79017c3c382148832c6ae50c22502e66f7a2f81ccbdb9e1377af31859d3a)  |
+| rate  |  10000                                                              |
 
-The contract emits events for all operations to enable off-chain monitoring:
 
-```rust
-#[derive(Drop, starknet::Event)]
-struct TransferEvent {
-    from: PubKey,
-    to: PubKey,
-    nonce: u64
-}
+| USDT  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 |  [0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8](https://voyager.online/contract/0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8) |
+| Tongo |  [0x659c62ba8bc3ac92ace36ba190b350451d0c767aa973dd63b042b59cc065da0](https://voyager.online/contract/0x659c62ba8bc3ac92ace36ba190b350451d0c767aa973dd63b042b59cc065da0)  |
+| rate  |  10000                                                              |
 
-#[derive(Drop, starknet::Event)]
-struct FundEvent {
-    to: PubKey,
-    amount: felt252,
-    nonce: u64
-}
+| DAI   |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 | [0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3](https://voyager.online/contract/0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3)  |
+| Tongo | [0x511741b1ad1777b4ad59fbff49d64b8eb188e2aeb4fc72438278a589d8a10d8](https://voyager.online/contract/0x511741b1ad1777b4ad59fbff49d64b8eb188e2aeb4fc72438278a589d8a10d8)   |
+| rate  | 10000000000000000                                                   |
 
-#[derive(Drop, starknet::Event)]
-struct WithdrawEvent {
-    from: PubKey,
-    to: ContractAddress,
-    amount: felt252,
-    nonce: u64
-}
 
-#[derive(Drop, starknet::Event)]
-struct RolloverEvent {
-    account: PubKey,
-    nonce: u64
-}
-```
+## Sepolia
+We listed here a set of instances of Tongo deployed in mainnet
+| STRK  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 | [0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d](https://sepolia.voyager.online/contract/0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d)   |
+| Tongo | [0x408163bfcfc2d76f34b444cb55e09dace5905cf84c0884e4637c2c0f06ab6ed](https://sepolia.voyager.online/contract/0x408163bfcfc2d76f34b444cb55e09dace5905cf84c0884e4637c2c0f06ab6ed)   |
+| rate  | 50000000000000000                                                   |
 
-## Data Structures
+| ETH   |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 | [0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7](https://sepolia.voyager.online/contract/0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7)   |
+| Tongo | [0x2cf0dc1d9e8c7731353dd15e6f2f22140120ef2d27116b982fa4fed87f6fef5](https://sepolia.voyager.online/contract/0x2cf0dc1d9e8c7731353dd15e6f2f22140120ef2d27116b982fa4fed87f6fef5)   |
+| rate  | 3000000000000                                                       |
 
-### Core Types
+| USDC  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 | [0x53b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080](https://sepolia.voyager.online/contract/0x53b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080)   |
+| Tongo | [0x2caae365e67921979a4e5c16dd70eaa5776cfc6a9592bcb903d91933aaf2552](https://sepolia.voyager.online/contract/0x2caae365e67921979a4e5c16dd70eaa5776cfc6a9592bcb903d91933aaf2552)   |
+| rate  | 10000                                                               |
 
-```rust
-// Public key as elliptic curve point
-struct PubKey {
-    x: felt252,
-    y: felt252
-}
 
-// ElGamal ciphertext
-struct CipherBalance {
-    CL: StarkPoint,  // g^b * y^r (left component)
-    CR: StarkPoint   // g^r (right component)
-}
-
-// Authenticated encryption balance
-struct AEBalance {
-    ciphertext: u512,
-    nonce: u256
-}
-
-// Complete account state
-struct State {
-    balance: CipherBalance,
-    pending: CipherBalance,
-    audit: CipherBalance,
-    nonce: u64,
-    ae_balance: AEBalance,
-    ae_audit_balance: AEBalance
-}
-```
-
-### Operation Structures
-
-```rust
-struct Fund {
-    to: PubKey,
-    amount: felt252,
-    ae_hints: AEHints,
-    proof: ProofOfFund
-}
-
-struct Transfer {
-    from: PubKey,
-    to: PubKey,
-    L: StarkPoint,          // Sender encryption left component
-    L_bar: StarkPoint,      // Receiver encryption left component
-    L_audit: StarkPoint,    // Auditor encryption left component
-    R: StarkPoint,          // Shared right component
-    ae_hints: AEHints,
-    proof: ProofOfTransfer
-}
-
-struct Withdraw {
-    from: PubKey,
-    amount: felt252,
-    to: ContractAddress,    // Starknet address to receive ERC20
-    ae_hints: AEHints,
-    proof: ProofOfWithdraw
-}
-```
-
-## Verification System
-
-### Proof Verifier
-
-The contract includes a sophisticated zero-knowledge proof verification system:
-
-#### Main verification logic
-
-- `verify_fund()`: Validates funding proofs (POE)
-- `verify_transfer()`: Validates transfer proofs (POE + PED + RAN)
-- `verify_withdraw()`: Validates withdrawal proofs (POE + RAN)
-- `verify_range()`: Bit-decomposition range proofs
-- `verify_pedersen()`: Pedersen commitment proofs
-
-#### Cryptographic utilities
-
-- Point arithmetic operations
-- Hash computations for Fiat-Shamir
-- Curve parameter constants
-
-#### Proof data structures
-
-```rust
-struct ProofOfFund {
-    Ax: StarkPoint,
-    sx: felt252
-}
-
-struct ProofOfTransfer {
-    ownership: ProofOfOwnership,
-    blinding: ProofOfOwnership,
-    sender_ped: ProofOfPedersen,
-    receiver_ped: ProofOfPedersen,
-    audit_ped: ProofOfPedersen,
-    amount_range: ProofOfRange,
-    remaining_range: ProofOfRange
-}
-```
-
-## Operations
-
-### 1. Fund Operation
-
-Converts ERC20 tokens to encrypted balances:
-
-```rust
-fn fund(ref self: TContractState, fund: Fund) {
-    // Verify proof of ownership
-    verify_fund(fund.proof, fund.to, fund.amount);
-
-    // Create encrypted balance
-    let cipher = encrypt_balance(fund.amount, fund.to);
-
-    // Update storage
-    self.balance.write(fund.to, cipher_add(self.balance.read(fund.to), cipher));
-    self.nonce.write(fund.to, self.nonce.read(fund.to) + 1);
-}
-```
-
-### 2. Transfer Operation
-
-Performs confidential transfers between accounts:
-
-```rust
-fn transfer(ref self: TContractState, transfer: Transfer) {
-    // Verify comprehensive transfer proof
-    verify_transfer(transfer.proof, /* public inputs */);
-
-    // Update sender balance (subtract)
-    let sender_cipher = CipherBalance { L: transfer.L, R: transfer.R };
-    let old_balance = self.balance.read(transfer.from);
-    self.balance.write(transfer.from, cipher_subtract(old_balance, sender_cipher));
-
-    // Update receiver pending (add)
-    let receiver_cipher = CipherBalance { L: transfer.L_rec, R: transfer.R };
-    let old_pending = self.pending.read(transfer.to);
-    self.pending.write(transfer.to, cipher_add(old_pending, receiver_cipher));
-
-    // Update auditor balance
-    let audit_cipher = CipherBalance { L: transfer.L_audit, R: transfer.R };
-    let old_audit = self.audit_balance.read(transfer.from);
-    self.audit_balance.write(transfer.from, cipher_subtract(old_audit, audit_cipher));
-}
-```
-
-### 3. Rollover Operation
-
-Merges pending transfers into main balance:
-
-```rust
-fn rollover(ref self: TContractState, rollover: Rollover) {
-    // Verify ownership
-    verify_ownership(rollover.proof, rollover.to);
-
-    // Move pending to balance
-    let pending = self.pending.read(rollover.to);
-    let balance = self.balance.read(rollover.to);
-    self.balance.write(rollover.to, cipher_add(balance, pending));
-
-    // Clear pending
-    self.pending.write(rollover.to, CipherBalance { L: zero_point(), R: zero_point() });
-}
-```
-
-## Security Features
-
-### Anti-Spam Protection
-
-- **Pending balance system**: Incoming transfers go to separate pending storage
-- **Explicit rollover**: Users must claim pending transfers
-- **Nonce protection**: Prevents replay attacks
-
-### Range Proof Security
-
-- **32-bit decomposition**: Ensures amounts are in valid range [0, 2³²)
-- **Bit verification**: Each bit proven to be 0 or 1 using OR proofs
-- **Overflow prevention**: Prevents negative balances and money creation
-
-### Cryptographic Guarantees
-
-- **Discrete log assumption**: Security based on Stark curve
-- **Fiat-Shamir**: Makes interactive proofs non-interactive
-- **Context binding**: Proofs tied to specific transactions
 
 ## Deployment
-
-### Configuration
-
+You can deploy another instance of Tongo with your own set of parameters. The constructor of the contract is
 ```rust
-// Contract constructor
-fn constructor(
-    ref self: ContractState,
-    strk_address: ContractAddress,    // ERC20 token to wrap
-    view: PubKey                      // Global auditor public key
-) {
-    self.strk_address.write(strk_address);
-    self.view.write(view);
-}
+    #[constructor]
+    fn constructor(
+        ref self: ContractState,
+        owner: ContractAddress,
+        ERC20: ContractAddress,
+        rate: u256,
+        bit_size: u32,
+        auditor_key: Option<PubKey>,
+    ) {
+        self.owner.write(owner);
+        self.ERC20.write(ERC20);
+        self.rate.write(rate);
+
+        assert!(bit_size <= 128_u32, "Bit size should be 128 at max");
+        self.bit_size.write(bit_size);
+
+        if let Some(key) = auditor_key {
+            self._set_auditor_key(key);
+        }
+    }
+
 ```
-
-## Testing
-
-Comprehensive test suite covers:
-
-- **Unit tests**: Individual function verification
-- **Integration tests**: Full operation flows
-- **Proof tests**: ZK proof generation and verification
-- **Edge cases**: Error conditions and boundary values
-
-```bash
-# Run all tests
-scarb test
-```
-
-The Cairo implementation provides a secure, efficient foundation for confidential payments on Starknet.

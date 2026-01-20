@@ -8,24 +8,19 @@ src = "src"
 build-dir = "book"
 
 [output.html]
+mathjax-support = true
 default-theme = "navy"
 preferred-dark-theme = "navy"
 git-repository-url = "https://github.com/fatlabsxyz/tongo-docs"
 edit-url-template = "https://github.com/fatlabsxyz/tongo-docs/edit/master/{path}"
 additional-css = ["theme/custom.css"]
 additional-js = ["theme/footer.js"]
-mathjax-support = true
-
-[output.html.mathjax]
-inline = ["$", "$"]
-display = ["$$", "$$"]
 
 [output.html.search]
 enable = true
 
 [output.html.fold]
 enable = false
-level = 0
 
 [output.html.playground]
 editable = false

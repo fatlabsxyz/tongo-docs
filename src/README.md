@@ -1,7 +1,8 @@
-# Tongo Documentation
+# Tongo Documentation (Under Construction)
 
-Welcome to the official Tongo documentation. Tongo is a confidential payment system for ERC20 tokens on Starknet, providing privacy-preserving transactions while maintaining auditability and compliance features.
+Welcome to the official Tongo documentation. Tongo is a confidential payment system for ERC20 tokens on Starknet, providing privacy-preserving transactions while maintaining auditability and compliance features. Tongo is heavily based on [this paper](https://eprint.iacr.org/2019/191).
 
+> **Waring** This documentation is under costruction. It is mostly done but we have to come back to round some rough edges. Use it wisely.
 ## What is Tongo?
 
 Tongo wraps any ERC20 token with ElGamal encryption, enabling private transfers while maintaining full auditability. Built on zero-knowledge proofs and homomorphic encryption over the Stark curve, Tongo enables users to transact with hidden amounts while preserving the ability to verify transaction validity.
@@ -9,26 +10,7 @@ Tongo wraps any ERC20 token with ElGamal encryption, enabling private transfers 
 **Key Features:**
 - **No Trusted Setup**: Built entirely on elliptic curve cryptography
 - **Hidden Amounts**: All transfer amounts are encrypted
-- **Native Starknet Integration**: Leverages Starknet's elliptic curve operations
 - **Flexible Compliance**: Global auditor support and selective disclosure
-
-## Documentation Structure
-
-### [Protocol Documentation](protocol/introduction.md)
-Learn about the underlying protocol, cryptography, and how Tongo works:
-- Introduction to confidential payments
-- Encryption system and ZK proofs
-- Transfer protocol
-- Auditing and compliance
-- Cairo contracts
-
-### [SDK Documentation](sdk/README.md)
-Get started building with the Tongo TypeScript SDK:
-- Installation and quick start
-- Core concepts and architecture
-- Step-by-step guides
-- Complete API reference
-- Real-world examples
 
 ## Quick Links
 
