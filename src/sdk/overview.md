@@ -24,10 +24,7 @@ The SDK works on:
 - **Starknet Mainnet** - Production deployments
 - **Starknet Sepolia** - Testnet for development
 
-Deployed Tongo Contracts:
-- **Mainnet**: `0x0415f2c3b16cc43856a0434ed151888a5797b6a22492ea6fd41c62dbb4df4e6c` (USDC wrapper)
-- **Sepolia**: `0x00b4cca30f0f641e01140c1c388f55641f1c3fe5515484e622b6cb91d8cee585` (STRK wrapper, 1:1 rate)
-
+Check the deployed [Tongo Instances](../protocol/contracts.md) for information about Tongo contracts wrapping different tokens.
 
 ## Quick Links
 

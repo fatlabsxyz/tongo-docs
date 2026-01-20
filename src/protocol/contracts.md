@@ -28,10 +28,16 @@ We listed here a set of instances of Tongo deployed in mainnet
 | rate  |  10                                                                 |
 
 
-| USDC  |                                                                     | 
+| USDC.e|                                                                     | 
 |-------|---------------------------------------------------------------------|
 | ERC20 |  [0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8](https://voyager.online/contract/0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8) |
 | Tongo |  [0x72098b84989a45cc00697431dfba300f1f5d144ae916e98287418af4e548d96](https://voyager.online/contract/0x72098b84989a45cc00697431dfba300f1f5d144ae916e98287418af4e548d96)  |
+| rate  |  10000                                                              |
+
+| USDC  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 |  [0x033068F6539f8e6e6b131e6B2B814e6c34A5224bC66947c47DaB9dFeE93b35fb](https://voyager.online/contract/0x033068F6539f8e6e6b131e6B2B814e6c34A5224bC66947c47DaB9dFeE93b35fb) |
+| Tongo |  [0x026f79017c3c382148832c6ae50c22502e66f7a2f81ccbdb9e1377af31859d3a](https://voyager.online/contract/0x026f79017c3c382148832c6ae50c22502e66f7a2f81ccbdb9e1377af31859d3a)  |
 | rate  |  10000                                                              |
 
 
