@@ -338,10 +338,6 @@ tr:hover {
     box-shadow: 0 0 20px rgba(255, 77, 0, 0.3);
 }
 
-nav.sidebar .chapter .subsubsections {
-    display: none !important;
-}
-
 /* Navigation */
 .nav-chapters {
     color: var(--ice-blue);
