@@ -9,7 +9,7 @@ SHE is the cryptographic foundation of Tongo but its building blocks can be used
 - **Package**: `@fatsolutions/she`
 - **Version**: 0.4.0
 - **License**: Apache-2.0
-- **Repository**: [github.com/fatlabsxyz/tongo-docs](https://github.com/fatlabsxyz/tongo-docs)
+- **Repository**: [github.com/fatlabsxyz/she](https://github.com/fatlabsxyz/she)
 
 ## Protocols
 
