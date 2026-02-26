@@ -74,6 +74,12 @@ We listed here a set of instances of Tongo deployed in mainnet
 | Tongo | [0x2caae365e67921979a4e5c16dd70eaa5776cfc6a9592bcb903d91933aaf2552](https://sepolia.voyager.online/contract/0x2caae365e67921979a4e5c16dd70eaa5776cfc6a9592bcb903d91933aaf2552)   |
 | rate  | 10000                                                               |
 
+| wBTC  |                                                                     | 
+|-------|---------------------------------------------------------------------|
+| ERC20 | [0x452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e](https://sepolia.voyager.online/contract/0x452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e)   |
+| Tongo | [0x02b9f62f9be99590ad2505e9e89ca746c8fb67bdb6a4be2a1b9a1d867af7339e](https://sepolia.voyager.online/contract/0x02b9f62f9be99590ad2505e9e89ca746c8fb67bdb6a4be2a1b9a1d867af7339e)   |
+| rate  | 10                                                               |
+
 
 
 ## Deployment
