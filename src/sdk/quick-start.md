@@ -3,11 +3,11 @@
 ## Installation
 
 ### Using npm
-To use the SDK you need to install it together with a starknet.js version superior to `v8`.
+To use the SDK you need to install it together with a starknet.js version superior to `v9`.
 
 ```bash
 npm install @fatsolutions/tongo-sdk
-npm install starknet@8.x.x
+npm install starknet@9.x.x
 ```
 
 
@@ -23,7 +23,7 @@ import { Account, RpcProvider } from "starknet";
 // Setup Starknet provider 
 const provider = new RpcProvider({
     nodeUrl: "YOUR_RPC_PROVIDER",
-    specVersion: "0.8.1",
+    specVersion: "0.10.0",
 });
 
 // Your Starknet account (for paying gas fees)
