@@ -13,7 +13,7 @@ The Tongo TypeScript SDK provides a comprehensive interface for building confide
 ## Package Information
 
 - **Package**: `@fatsolutions/tongo-sdk`
-- **Current Version**: 1.3.1
+- **Current Version**: 1.3.3
 - **License**: Apache-2.0
 - **Repository**: [github.com/fatlabsxyz/tongo](https://github.com/fatlabsxyz/tongo)
 
