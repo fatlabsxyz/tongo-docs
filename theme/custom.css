@@ -576,3 +576,44 @@ body::before {
         justify-content: space-between;
     }
 }
+
+/* Version selector (v1 / v2 tabs) */
+.version-tabs__buttons {
+    display: flex;
+    gap: 0.25rem;
+    margin: 1.5rem 0 1rem;
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+.version-tab {
+    background: transparent;
+    border: 1px solid var(--table-border-color);
+    border-bottom: none;
+    color: var(--ice-blue);
+    font-family: inherit;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.4rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.version-tab:hover {
+    color: var(--warm-coral);
+}
+
+.version-tab.is-active {
+    background: var(--deep-orange);
+    border-color: var(--deep-orange);
+    color: var(--jet);
+    font-weight: 700;
+}
+
+.version-panel {
+    display: none;
+}
+
+.version-panel.is-active {
+    display: block;
+}

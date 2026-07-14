@@ -14,7 +14,7 @@ preferred-dark-theme = "navy"
 git-repository-url = "https://github.com/fatlabsxyz/tongo-docs"
 edit-url-template = "https://github.com/fatlabsxyz/tongo-docs/edit/master/{path}"
 additional-css = ["theme/custom.css"]
-additional-js = ["theme/footer.js"]
+additional-js = ["theme/footer.js", "theme/tabs.js"]
 
 [output.html.search]
 enable = true
