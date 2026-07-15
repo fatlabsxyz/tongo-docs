@@ -9,6 +9,8 @@
 - [Introduction](protocol/introduction.md)
 - [Encryption System](protocol/encryption.md)
 - [Storage Architecture](protocol/storage.md)
+- [Vault Architecture (v2)](protocol/vault.md)
+- [Relayer Architecture (v2)](protocol/relayer.md)
 - [Auditing & Compliance](protocol/auditor.md)
 - [Tongo instances](protocol/contracts.md)
 - [Contract ABI](protocol/abi.md)
@@ -40,6 +42,7 @@
   - [Rollover](sdk/operations/rollover.md)
   - [Withdrawals](sdk/operations/withdraw.md)
   - [Ragequit](sdk/operations/ragequit.md)
+- [Relaying](sdk/relaying.md)
 
 <!-- ## Core Concepts
 <!-- 

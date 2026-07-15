@@ -3,11 +3,12 @@ This operation converts encrypted Tongo balance to ERC20 tokens and sends them t
 - `amount`: The amount of Tongo balance to withdraw.
 - `to`: The starknet account address to send the ERC20 to.
 - `sender`: The sender of the transaction.
+- `feeToSender` *(optional, v2)*: An amount of Tongos paid to the transaction sender, used to reimburse a relayer. See [Relaying](../relaying.md).
 
 Convert encrypted Tongo balance back to ERC20 tokens.
 
 ```typescript
-const withdrawOp = await senderAccount.withdraw({
+const withdrawOp = await tongoAccount.withdraw({
     to: "RECEIVER_STARKNET_ACCOUNT_ADDRESS",
     amount: "AMOUNT_TO_WITHDRAW"
     sender: "SENDER_ADDRESS"

@@ -1,6 +1,6 @@
 # Quick Start
 
-## Installation
+ho# Installation
 
 ### Using npm
 To use the SDK you need to install it together with a starknet.js version superior to `v9`.
