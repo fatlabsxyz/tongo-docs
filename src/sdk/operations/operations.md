@@ -1,7 +1,6 @@
 # Operations
 Operations are objects that represent Tongo transactions. Each operation encapsulates the cryptographic proofs, encrypted data, and calldata needed for a specific action.
 
-
 ## Creation and Execution
 Operations are created by an instance of a Tongo [Account Class](../accounts.md) and executed by a starknet signer. The general lifecycle of an Operation is 
 
@@ -41,3 +40,19 @@ Tongo supports five core operations, we describe them in the following sections:
 4. **[Rollover](rollover.md)** - Claim pending incoming transfers
 3. **[Withdraw](withdraw.md)** - Convert encrypted balance back to ERC20
 5. **[Ragequit](ragequit.md)** - Emergency withdrawal of entire balance
+
+## Multi-Operations (v2)
+A `MultiOperation` bundles several operations into a **single StarkNet transaction** that settles atomically. Because each operation's ZK proof commits to the state it acts on, they can't just be concatenated: the bundle chains them, proving each one against the state left by the previous.
+
+You start a bundle with a `sender` and push operations into it. The `sender` is fixed by the bundle, so it is omitted from each descriptor:
+
+```typescript
+import { OperationType } from "@fatsolutions/tongo-sdk";
+
+const multi = await tongoAccount.startMultiOperation("SENDER_ADDRESS");
+await tongoAccount.pushOperation(multi, { OperationType, ...params });
+
+const tx = await signer.execute(multi.toCalldata());
+```
+
+Each descriptor takes a `type` and that operation's parameters. All operations in a bundle must share the same sender, contract and chain. Multioperations can also be seeded with a already-built basic operation.

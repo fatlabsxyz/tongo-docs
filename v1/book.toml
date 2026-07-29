@@ -1,0 +1,25 @@
+[book]
+title = "Tongo docs"
+authors = ["Fat Solutions"]
+language = "en"
+src = "src"
+
+[build]
+build-dir = "book"
+
+[output.html]
+mathjax-support = false
+default-theme = "navy"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/fatlabsxyz/tongo"
+additional-css = ["../theme/custom.css"]
+additional-js = ["../theme/mathjax-config.js", "../theme/footer.js", "../theme/tabs.js", "../theme/version-switch.js"]
+
+[output.html.search]
+enable = true
+
+[output.html.fold]
+enable = false
+
+[output.html.playground]
+editable = false

@@ -1,0 +1,36 @@
+# Tongo
+
+> Tongo is a confidential payment protocol for ERC-20 tokens on Starknet. It wraps any ERC-20 with ElGamal encryption and zero-knowledge proofs so transfer amounts stay hidden while remaining verifiable on-chain — no trusted setup, no oracles, no TEEs, no external servers. Optional auditor keys provide compliance via selective disclosure.
+
+The current protocol version is **v2**, which splits the protocol into a per-asset **Vault** (holds the ERC-20 reserve, deploys ledgers) and **Tongo Ledger** instances (hold encrypted balances, verify proofs), adds **external transfers** between ledgers of the same Vault, and introduces a **Relayer** that lets users operate **gasless — without a Starknet account** (SNIP-9 outside execution paid through the AVNU paymaster and reimbursed from the operation fee). The v1 (legacy) docs remain available under `/v1/`.
+
+Tongo is built by Fat Solutions. The cryptography is based on the paper "Zether: Towards Privacy in a Smart Contract World" (https://eprint.iacr.org/2019/191).
+
+## Protocol
+- [What's new in v2](https://docs.tongo.cash/whats-new.html): summary of the v1 → v2 changes and a migration checklist.
+- [Introduction](https://docs.tongo.cash/protocol/introduction.html): what Tongo is, its properties, and how operations work.
+- [Encryption System](https://docs.tongo.cash/protocol/encryption.html): how balances are ElGamal-encrypted.
+- [Storage Architecture](https://docs.tongo.cash/protocol/storage.html): balances, pending balances, and audit state.
+- [Vault Architecture (v2)](https://docs.tongo.cash/protocol/vault.html): per-asset reserve and ledger deployment via `deploy_tongo`.
+- [Relayer Architecture (v2)](https://docs.tongo.cash/protocol/relayer.html): gasless meta-transactions, fees, and replay protection.
+- [Auditing & Compliance](https://docs.tongo.cash/protocol/auditor.html): auditor keys and selective disclosure.
+- [Tongo instances](https://docs.tongo.cash/protocol/contracts.html): deployed Vault/Ledger addresses on mainnet and sepolia.
+- [Contract ABI](https://docs.tongo.cash/protocol/abi.html): the contract interfaces.
+
+## SDK
+- [SDK Overview](https://docs.tongo.cash/sdk/overview.html): the `@fatsolutions/tongo-sdk` package.
+- [Quick Start](https://docs.tongo.cash/sdk/quick-start.html): install and first operation.
+- [Account Class](https://docs.tongo.cash/sdk/accounts.html): the `Account` interface.
+- [Operations](https://docs.tongo.cash/sdk/operations/operations.html): fund, transfer, rollover, withdraw, ragequit.
+- [Relaying](https://docs.tongo.cash/sdk/relaying.html): gasless operations via `RelayerAccount`.
+
+## Cryptography (SHE)
+- [SHE Overview](https://docs.tongo.cash/she/index.html): the sigma-protocol library Tongo is built on.
+- [Sigma Protocols](https://docs.tongo.cash/she/sigma.html): POE, POE2, POEN, ElGamal, SameEncryption, Bit, and Range proofs.
+
+## Resources
+- npm package: https://www.npmjs.com/package/@fatsolutions/tongo-sdk
+- GitHub: https://github.com/fatlabsxyz/tongo
+- Demo app: https://demo.tongo.cash
+- Website: https://tongo.cash
+- Built by Fat Solutions: https://fatsolutions.xyz

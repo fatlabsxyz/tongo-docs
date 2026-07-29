@@ -9,14 +9,14 @@ The Tongo TypeScript SDK provides a comprehensive interface for building confide
 - **Proof Generation**: Automatic ZK proof creation for all operations
 - **Encryption Handling**: Transparent management of encrypted balances
 - **Starknet Integration**: Seamless integration with Starknet wallets and providers
+- **Relaying**: Transact without a funded StarkNet account through the `RelayerAccount`
 
 ## Package Information
 
 - **Package**: `@fatsolutions/tongo-sdk`
-- **Current Version**: 1.4.0
+- **Current Version**: 2.0.0
 - **License**: Apache-2.0
 - **Repository**: [github.com/fatlabsxyz/tongo](https://github.com/fatlabsxyz/tongo)
-
 
 ## Supported Networks
 
@@ -28,8 +28,7 @@ Check the deployed [Tongo Instances](../protocol/contracts.md) for information a
 
 ## Quick Links
 
-- [Installation](installation.md) - Install the SDK
-- [Quick Start](quick-start.md) - Your first Tongo transaction
-- [Core Concepts](concepts/accounts.md) - Understand the fundamentals
-- [API Reference](api/account.md) - Complete API documentation
-- [Examples](examples/complete-workflow.md) - Real-world code examples
+- [Quick Start](quick-start.md) - Install the SDK and send your first Tongo transaction
+- [Account Class](accounts.md) - The main interface for a Tongo account
+- [Operations](operations/operations.md) - Fund, transfer, rollover, withdraw, ragequit
+- [Relaying](relaying.md) - Transact without a StarkNet account

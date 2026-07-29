@@ -1,5 +1,5 @@
 {
-  "buildCommand": "curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz | tar xz && ./mdbook build",
+  "buildCommand": "curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.40/mdbook-v0.4.40-x86_64-unknown-linux-gnu.tar.gz | tar xz && chmod +x build.sh && MDBOOK=\"$PWD/mdbook\" bash build.sh",
   "outputDirectory": "book",
   "installCommand": "echo 'No install needed'"
 }
