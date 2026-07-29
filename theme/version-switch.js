@@ -206,15 +206,30 @@
     title.appendChild(a);
   }
 
-  // ── Mascot at the top of the sidebar ─────────────────────────────────────
+  // ── Mascot at the top of the sidebar — click it for a roar 🦍 ─────────────
+  var ROARS = ["/roar-1.mp3", "/roar-2.mp3", "/roar-3.mp3"];
+  var roarAudio = {};
+  var lastRoar = -1;
+  function playRoar() {
+    try {
+      var i = Math.floor(Math.random() * ROARS.length);
+      if (ROARS.length > 1 && i === lastRoar) i = (i + 1) % ROARS.length; // no immediate repeat
+      lastRoar = i;
+      var a = roarAudio[i] || (roarAudio[i] = new Audio(ROARS[i]));
+      a.currentTime = 0;
+      var p = a.play();
+      if (p && p.catch) p.catch(function () {});
+    } catch (e) {}
+  }
   function buildSidebarLogo() {
     var box = document.querySelector(".sidebar .sidebar-scrollbox");
     if (!box) return;
     var a = document.createElement("a");
     a.className = "doc-sidebar-logo";
-    a.href = "/";
-    a.setAttribute("aria-label", "Tongo docs — home");
+    a.href = "#";
+    a.setAttribute("aria-label", "Tongo — roar");
     a.innerHTML = '<img src="/tongo-mark.png" alt="Tongo" />';
+    a.addEventListener("click", function (e) { e.preventDefault(); playRoar(); });
     box.insertBefore(a, box.firstChild);
   }
 
