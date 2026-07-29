@@ -35,3 +35,10 @@ yarn-error.log*
 .tmp/
 temp/
 aux/
+
+# downloaded during Vercel build
+/mdbook
+
+# Claude local files (never commit)
+.claude/
+CLAUDE.md

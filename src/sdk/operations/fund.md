@@ -24,3 +24,24 @@ When receiving a Fund operation for some amount, the cairo contract creates an E
 
 ### Zero-Knowledge Proof
 In this opretaion, the only thing that has to be proven is the ownership of the Tongo account. This is done by proving knowledge of the account's private key.
+
+## Outside Fund (v2)
+`fund` requires the account owner (it needs a proof of ownership). **Outside Fund** lets anyone fund a Tongo account **without knowing its private key** — useful to fund an account you don't control. The parameters are:
+- `amount`: The amount of Tongo balance to fund.
+- `to`: The public key of the Tongo account to fund.
+
+Since it moves ERC20 from the caller, it also exposes an `approve` call, just like `fund`.
+
+```typescript
+const outsideFundOp = await account.outsideFund({
+    amount: "AMOUNT_TO_FUND",
+    to: "RECEIVER_PUBLIC_KEY",
+});
+
+await signer.execute([
+    outsideFundOp.approve!,     // ERC20 approval
+    ...outsideFundOp.toCalldata()
+]);
+```
+
+The funded amount is added to the receiver's **balance**. It emits an `OutsideFundEvent`.

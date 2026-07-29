@@ -5,9 +5,10 @@
   footer.innerHTML = `
     <div class="footer-content">
       <div class="footer-links">
-        <a href="https://github.com/fatlabsxyz" target="_blank" rel="noopener noreferrer">GITHUB</a>
+        <a href="https://tongo.cash" target="_blank" rel="noopener noreferrer">WEBSITE</a>
+        <a href="https://demo.tongo.cash" target="_blank" rel="noopener noreferrer">APP</a>
+        <a href="https://github.com/fatlabsxyz/tongo" target="_blank" rel="noopener noreferrer">GITHUB</a>
         <a href="https://t.me/tongoxyz" target="_blank" rel="noopener noreferrer">TELEGRAM</a>
-        <a href="https://docs.tongo.cash" target="_blank" rel="noopener noreferrer">DOCS</a>
         <a href="https://twitter.com/tongoxyz" target="_blank" rel="noopener noreferrer">TWITTER</a>
       </div>
       <div class="footer-credits">
@@ -17,8 +18,7 @@
     </div>
   `;
 
-  const content = document.querySelector('.content');
-  if (content) {
-    content.appendChild(footer);
-  }
+  // Append to <body> so `position: fixed` anchors to the viewport reliably
+  // (an ancestor with a transform would otherwise become its containing block).
+  document.body.appendChild(footer);
 })();
